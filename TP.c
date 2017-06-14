@@ -717,16 +717,13 @@ int main(int argc, char const *argv[]) {
                     WinCU(win[1], W1, H1, 1);
                 break;
                 case 3:                                             //用户输入投票
-                    wclear(win[1]);                                 //清除操作窗口
-                    box(win[1],0,0);                                //为操作窗口重新设定边框
                     WinSet(win[1], W1);
                 break;
                 case 4:                                             //用户输入显示
-                    wclear(win[1]);                                 //清除操作窗口
-                    box(win[1],0,0);                                //为操作窗口重新设定边框
                     WinShow(win[1], W1);
                 break;
                 case 5:                                             //用户输入保存
+                    WinShow(win[1], W1);
                     savefile(win[1], W1, H1, "User.cfg");
                     break;
                 default:
