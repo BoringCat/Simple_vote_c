@@ -9,7 +9,7 @@ unsigned int score[12] = {0};                                   //投票分数
 unsigned int Nscore = 0;                                        //投票人数
 double Np = 50.0;
 int WinX = 0, WinY = 0;
-char LoadName[256];
+char LoadName[256] = {0};
 
 //获取字符串的长度，用于光标定位
 int longofstring(char *str, int Status){
@@ -67,15 +67,186 @@ char* dbl2str(unsigned int n, double Dbl) {
     return s;
 }
 
-//保存数据到"User.cfg"文件
-void savefile(WINDOW *win, int SW, int SH) {
-    WINDOW *Savef;
-    Savef = newwin(10, 50, WinY/2-5, WinX/2-25);
-    box(Savef, 0, 0);
+void printhelp(WINDOW *win, int SW, int SH) {
+    touchwin(win);
+    mvwprintw(win, 1, SW / 2 - 1, "帮助");
+    mvwprintw(win, 3, 5, "简单的投票系统(v?.something.whenever)");
+    mvwprintw(win, 5, 5, "1、感谢您有兴趣启动这个无聊的程序");
+    mvwprintw(win, 6, 8, "这个程序对中文输入支持不太好(问ncurses去啊)");
+    mvwprintw(win, 8, 5, "2、开始真正的帮助文档：");
+    mvwprintw(win, 9, 8, "首先你会看到这些文字(早就看到了)——————————————————>");
+    WINDOW *example;
+    example = newwin(12,23,6,WinX - 26);
+    box(example, 0, 0);
+    mvwprintw(example, 2, 2, "1——————创建(Create)");                //输出选项
+    mvwprintw(example, 3, 2, "2——————修改(Update)");
+    mvwprintw(example, 4, 2, "3——————投票(Set)");
+    mvwprintw(example, 5, 2, "4——————显示(Show)");
+    mvwprintw(example, 6, 2, "5——————保存(Save)");
+    mvwprintw(example, 7, 2, "6——————帮助(Help)");
+    mvwprintw(example, 8, 2, "7——————退出(Exit)");
+    mvwprintw(example, 9, 2, "选择(Select)：");
+    mvwprintw(win, 10, 8, "然后就选择操作就行了。");
+    mvwprintw(win, 12, 5, "3、(1).选创建就会创建新的候选人数据哦，");
+    mvwprintw(win, 13, 12, "原本的会消失的");
+    mvwprintw(win, 14, 8, "(2).想改候选人姓名或者得票比例的话，");
+    mvwprintw(win, 15, 12, "就选修改哦");
+    mvwprintw(win, 16, 8, "(3).所谓投票嘛，就是不停点点点哦，注意退出");
+    mvwprintw(win, 17, 12, "之前要先选”下一个“哦");
+    mvwprintw(win, 18, 8, "(4).“显示”下谁的得票最高哦！(当然是“今”啦)");
+    mvwprintw(win, 19, 8, "(5).如果想把数据存起来就选保存哦，记得写文件名哦");
+    mvwprintw(win, 20, 8, "(6).来嘛，来这里看看人家嘛");
+    mvwprintw(win, 21, 8, "(7).退出的时候要轻轻的哦，不要那么粗暴嘛，人家会不高兴的啦");
+    mvwprintw(win, 23, 5, "4、要记得，这个程序是有窗口的是有窗口的是有窗口的，不要单纯的认为");
+    mvwprintw(win, 24, 8, "是命令行模拟的(其实就是)");
+    mvwprintw(win, 26, 5, "5、其实这程序有规定窗口大小的啦(就是作者懒)。");
+    mvwprintw(win, 27, 8, "偷偷告诉你哦，终端大小小于 101x31 的都看不到这些(ge)内容的");
+    touchwin(example);
+    wrefresh(win);
     refresh();
-    wrefresh(Savef);
-    mvwprintw(Savef, 2, 1, "请输入你想保存的文件名")
+    wrefresh(example);
+}
+
+//保存数据到文件
+void savefile(WINDOW *win, int SW, int SH) {
+    int key = 0, p = 0, pn = 0, x, y;
+    char file[256] = {0};
+    int i = 0;
+    int IsInputChinese = 0;
+    int Chinese[3];
     FILE *fw;
+    if ((p = longofstring(LoadName, 0)) != 0){
+        strcpy(file, LoadName);
+    }
+    WINDOW *Savef[2];
+    Savef[0] = newwin(10, 50, WinY/2-5, WinX/2-13);
+    Savef[1] = newwin(3, 48, WinY/2-1, WinX/2-12);
+    box(Savef[0], 0, 0);
+    box(Savef[1], 0, 0);
+    refresh();
+    mvwprintw(Savef[0], 2, 1, "请输入你想保存的文件名(默认:User.cfg):");
+    mvwprintw(Savef[0], 8, 12, "<取消>");
+    mvwprintw(Savef[0], 8, 32, "<确定>");
+    mvwprintw(Savef[1], 1, 1, "%s", file);
+    wrefresh(Savef[0]);
+    wrefresh(Savef[1]);
+    touchwin(Savef[1]);
+    keypad(Savef[0], TRUE);
+    wmove(Savef[0], 5, p + 2);
+    while (1) {
+        key = wgetch(Savef[0]);
+        switch (key) {
+            case 9:
+                if (i == 0) {
+                    i++;
+                    wmove(Savef[0], 8, 13);
+                    break;
+                }
+                if (i == 1) {
+                    i++;
+                    wmove(Savef[0], 8, 33);
+                    break;
+                }
+                if (i == 2) {
+                    i = 0;
+                    wmove(Savef[0], 5, 2);
+                    break;
+                }
+            break;
+            case 10:
+                if (i == 1) goto end;
+                if (i == 2) goto start;
+            break;
+            case 127:                                           //按下退格键
+                getyx(Savef[0],y,x);                                 //获取光标位置，储存在x和y中
+                mvwprintw(Savef[0], 7, 5, "              ");
+                wmove(Savef[0], y, x);                       //光标复位
+                if (x - 1 >= 2) {                             //如果有数据需要删除
+                    mvwprintw(Savef[0], y, x - 1, " ");            //清除按safe下按键产生的字符和需要删除的字符
+                    wmove(Savef[0], y, x - 1);                       //光标复位
+                }
+                if (p > 0) {                               //判断是否有数据需要与屏幕上的数据一起删除
+                    if (file[p-3] < 0 && file[p-2] < 0 && file[p-1] < 0){
+                        mvwprintw(Savef[0], y, x - 2, "  ");            //清除按下按键产生的字符和需要删除的字符
+                        wmove(Savef[0], y, x - 2);                     //光标复位
+                        p -= 3;                                   //字符串长度-1
+                        pn -= 2;                                   //字符串长度-1
+                        file[p] = '\0';                   //删除最后一个字符
+                        file[p+1] = '\0';                   //删除最后一个字符
+                        file[p+2] = '\0';                   //删除最后一个字符
+                    }
+                    else{
+                        p--;                                   //字符串长度-1
+                        pn--;                                   //字符串长度-1
+                        file[p] = '\0';                   //删除最后一个字符
+                    }
+                }
+            break;
+            case KEY_DOWN:
+            case KEY_LEFT:
+            case KEY_RIGHT:
+            case KEY_UP:
+            break;
+            default:
+                getyx(Savef[0], y, x);
+                if (p > 45) {
+                    mvwprintw(Savef[0], 7, 5, "文件名过长！");
+                    wmove(Savef[0], y, x);
+                    break;
+                }
+                if (i == 0) {
+                    if ((key >= 40 && key <= 125) || key >= 128) {
+                        if (key >= 128){
+                            Chinese[IsInputChinese] = key;
+                            IsInputChinese++;
+                            if (p + 3 < 45){
+                                if (IsInputChinese == 3) {
+                                    if (Chinese[0] == 226 && Chinese[1] == 128 && Chinese[2] == 166) {
+                                        Chinese[0] = 77;
+                                        Chinese[1] = 77;
+                                        Chinese[2] = 80;
+                                        for (size_t l = 0; l < 3; l++) {
+                                            mvwprintw(Savef[0], 5, p + 2 + l, "%c", Chinese[l]);
+                                            file[p+l] = (char)Chinese[l];
+                                            Chinese[l] = 0;
+                                        }
+                                        pn++;
+                                    }
+                                    else{
+                                        for (size_t l = 0; l < 3; l++) {
+                                            mvwprintw(Savef[0], 5, pn + 2, "%c", Chinese[l]);
+                                            file[p+l] = (char)Chinese[l];
+                                            Chinese[l] = 0;
+                                        }
+                                    }
+                                    IsInputChinese = 0;
+                                    p += 3;                                //字符串长度-1
+                                    pn += 2;
+                                }
+                                break;
+                            }
+                            else{
+                                mvwprintw(Savef[0], 7, 5, "文件名过长！");
+                                wmove(Savef[0], y, x);
+                                break;
+                            }
+                        }
+                        else {
+                            file[p] = (char)key;              //将输入的字符加入到名字中
+                            mvwprintw(Savef[0], 5, pn + 2 , "%c", key);
+                            p++;                            //字符串长度-1
+                            pn++;
+                        }
+                    }
+                }
+            break;
+        }
+    }
+    start:
+    delwin(Savef[0]);
+    delwin(Savef[1]);
+    if (longofstring(file, 256) == 0)
+    strcpy(file, "User.cfg");
     if ((fw = fopen(file, "w")) == NULL) {
         wclear(win);                                                //清除输出窗口
         mvwprintw(win, SH / 2, SW / 2 - 8, "%s", "无法打开保存文件");
@@ -97,6 +268,8 @@ void savefile(WINDOW *win, int SW, int SH) {
     fprintf(fw, "%d|%lf", Nscore, Np);
     fflush(fw);                                                     //清除缓存区
     fclose(fw);                                                     //关闭文件
+    end:
+    return;
 }
 
 //数据创建及修改函数
@@ -578,11 +751,11 @@ void WinShow(WINDOW *win, int SW) {
     mvwprintw(win, 1, SW/2 - 3, "%s", "投票结果");               //输出标题
     mvwprintw(win, 2, (SW-70)/2, "%s%d%s", "总共", Nscore, "人投票");     //输出投票信息
     mvwprintw(win, 2, (SW-70)/2 + 54, "%s%-.4g%s", "得票比例", Np, "%即通过");     //输出投票信息
-    cwin[0] = newwin(15, 14, 5, (SW-74)/2 + 24);                            //信息窗口大小和位置
-    cwin[1] = newwin(15, 34, 5, (SW-74)/2 + 37);
-    cwin[2] = newwin(15, 8, 5, (SW-74)/2 + 70);
-    cwin[3] = newwin(15, 10, 5, (SW-74)/2 + 77);
-    cwin[4] = newwin(15, 12, 5, (SW-74)/2 + 86);
+    cwin[0] = newwin(15, 14, 5, (SW-74)/2 + 25);                            //信息窗口大小和位置
+    cwin[1] = newwin(15, 34, 5, (SW-74)/2 + 38);
+    cwin[2] = newwin(15, 8, 5, (SW-74)/2 + 71);
+    cwin[3] = newwin(15, 10, 5, (SW-74)/2 + 78);
+    cwin[4] = newwin(15, 12, 5, (SW-74)/2 + 87);
     for (size_t n = 0; n < 5; n++) {
         box(cwin[n], 0, 0);                                     //绘制边框
     }
@@ -629,8 +802,8 @@ int main(int argc, char const *argv[]) {
     initscr();                                                      //初始化终端窗口
     getmaxyx(stdscr,WinY,WinX);                                     //获取终端大小，存在x与y中
     endwin();                                                   //释放终端
-    if (WinY < 27 || WinX < 98) {
-        printf("终端大小不够(%dx%d)，建议大于(98x27) , 是否继续?[Y/N] ", WinX, WinY);
+    if (WinY < 32 || WinX < 101) {
+        printf("终端大小不够(%dx%d)，建议大于(101x31) , 是否继续?[Y/N] ", WinX, WinY);
         scanf("%c", &inp);
         if (inp != 'y' && inp != 'Y')  exit(1);
         scanf("%c", &inp);
@@ -659,6 +832,7 @@ int main(int argc, char const *argv[]) {
                     }
                     fscanf(fr, "%d|%lf", &Nscore, &Np);
                     fclose(fr);
+                    strcpy(LoadName, argv[i]);
                     goto ReadFin;                                   //跳出配置文件读取
                 }
                 continue;
@@ -668,7 +842,7 @@ int main(int argc, char const *argv[]) {
     ReadFin:                                                        //配置文件读取跳出点
     initscr();                                                      //初始化终端窗口
     noecho();
-    win[0]=newwin(9,21,1,3);                                        //设定选择窗口的大小和位置
+    win[0]=newwin(10,21,1,3);                                        //设定选择窗口的大小和位置
     win[1]=newwin(WinY - 2, WinX - 25,1,24);                              //设定操作窗口的大小和位置
     W1 = WinX - 25;                                                    //储存操作窗口的大小
     H1 = WinY - 2;
@@ -677,8 +851,9 @@ int main(int argc, char const *argv[]) {
     mvwprintw(win[0],3,1,"%s","3——————投票(Set)");
     mvwprintw(win[0],4,1,"%s","4——————显示(Show)");
     mvwprintw(win[0],5,1,"%s","5——————保存(Save)");
-    mvwprintw(win[0],6,1,"%s","6——————退出(Exit)");
-    mvwprintw(win[0],7,1,"%s","选择(Select)：");
+    mvwprintw(win[0],6,1,"%s","6——————帮助(Help)");
+    mvwprintw(win[0],7,1,"%s","7——————退出(Exit)");
+    mvwprintw(win[0],8,1,"%s","选择(Select)：");
     box(win[1],0,0);                                                //为操作窗口设定边框
     refresh();                                                      //刷新终端
     wrefresh(win[0]);                                               //刷新选择窗口
@@ -696,13 +871,13 @@ int main(int argc, char const *argv[]) {
         W1 = WinX - 27;                                                    //储存操作窗口的大小
         H1 = WinY - 2;
         touchwin(win[0]);                                           //选择窗口获取焦点
-        mvwprintw(win[0], 7, 15, "   ");                            //覆盖之前的输入
-        wmove(win[0], 7, 15);                                       //复位光标
+        mvwprintw(win[0], 8, 15, "   ");                            //覆盖之前的输入
+        wmove(win[0], 8, 15);                                       //复位光标
         echo();
         wgetnstr(win[0], input, 1);                                 //获取一个选择字符
         noecho();
-        mvwprintw(win[0], 7, 15, "%s", input);
-        mvwprintw(win[0], 8, 1, "%s", "          ");                //覆盖之前的错误提示
+        mvwprintw(win[0], 8, 15, "%s", input);
+        mvwprintw(win[0], 9, 1, "%s", "          ");                //覆盖之前的错误提示
         wrefresh(win[0]);
         wclear(win[1]);                                             //清除操作窗口
         box(win[1],0,0);                                            //为操作窗口重新设定边框
@@ -712,7 +887,8 @@ int main(int argc, char const *argv[]) {
         if (strchr(input, '4') != 0) p = 4;
         if (strchr(input, '5') != 0) p = 5;
         if (strchr(input, '6') != 0) p = 6;
-        if (p == 6) {                                               //用户输入退出
+        if (strchr(input, '7') != 0) p = 7;
+        if (p == 7) {                                               //用户输入退出
             T = 1;                                                  //设定退出函数
         }
         else{
@@ -730,13 +906,16 @@ int main(int argc, char const *argv[]) {
                     WinShow(win[1], W1);
                 break;
                 case 5:                                             //用户输入保存
-                    WinShow(win[1], W1);
                     savefile(win[1], W1, H1);
+                    WinShow(win[1], W1);
+                    break;
+                case 6:                                             //用户输入帮助
+                    printhelp(win[1], W1, H1);
                     break;
                 default:
-                    mvwprintw(win[0], 8, 1, "%s", "输入错误!");      //截获其他输入
+                    mvwprintw(win[0], 9, 1, "%s", "输入错误!");      //截获其他输入
                     wrefresh(win[0]);                               //刷新选择窗口
-                    mvwprintw(win[0], 7, 15, "  ");                 //覆盖输入
+                    mvwprintw(win[0], 8, 15, "  ");                 //覆盖输入
                     break;
             }
             refresh();
