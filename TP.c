@@ -9,6 +9,7 @@ unsigned int score[12] = {0};                                   //投票分数
 unsigned int Nscore = 0;                                        //投票人数
 double Np = 50.0;
 int WinX = 0, WinY = 0;
+char LoadName[256];
 
 //获取字符串的长度，用于光标定位
 int longofstring(char *str, int Status){
@@ -67,7 +68,13 @@ char* dbl2str(unsigned int n, double Dbl) {
 }
 
 //保存数据到"User.cfg"文件
-void savefile(WINDOW *win, int SW, int SH, char *file) {
+void savefile(WINDOW *win, int SW, int SH) {
+    WINDOW *Savef;
+    Savef = newwin(10, 50, WinY/2-5, WinX/2-25);
+    box(Savef, 0, 0);
+    refresh();
+    wrefresh(Savef);
+    mvwprintw(Savef, 2, 1, "请输入你想保存的文件名")
     FILE *fw;
     if ((fw = fopen(file, "w")) == NULL) {
         wclear(win);                                                //清除输出窗口
@@ -724,7 +731,7 @@ int main(int argc, char const *argv[]) {
                 break;
                 case 5:                                             //用户输入保存
                     WinShow(win[1], W1);
-                    savefile(win[1], W1, H1, "User.cfg");
+                    savefile(win[1], W1, H1);
                     break;
                 default:
                     mvwprintw(win[0], 8, 1, "%s", "输入错误!");      //截获其他输入
