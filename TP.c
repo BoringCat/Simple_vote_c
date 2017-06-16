@@ -27,36 +27,36 @@ void PrintColorWord(WINDOW *win, int i) {
     init_pair(1,COLOR_BLACK,COLOR_WHITE);                       //定义白底黑字
     init_pair(2,COLOR_WHITE,COLOR_BLACK);                       //定义黑底白字
     wattron(win, COLOR_PAIR(2));                                //启用“黑底白字”输出
-    mvwprintw(win,1,1,"%s","1──────创建(Create)");               //输出选项
-    mvwprintw(win,2,1,"%s","2──────修改(Update)");
-    mvwprintw(win,3,1,"%s","3──────投票(Set)");
-    mvwprintw(win,4,1,"%s","4──────显示(Show)");
-    mvwprintw(win,5,1,"%s","5──────保存(Save)");
-    mvwprintw(win,6,1,"%s","6──────帮助(Help)");
-    mvwprintw(win,7,1,"%s","7──────退出(Exit)");
+    mvwprintw(win,1,1,"%s","1──────Create");               //输出选项
+    mvwprintw(win,2,1,"%s","2──────Revise");
+    mvwprintw(win,3,1,"%s","3──────Vote");
+    mvwprintw(win,4,1,"%s","4──────Show");
+    mvwprintw(win,5,1,"%s","5──────Save");
+    mvwprintw(win,6,1,"%s","6──────Help");
+    mvwprintw(win,7,1,"%s","7──────Exit");
     wattroff(win, COLOR_PAIR(2));                               //关闭“黑底白字”输出
     wattron(win, COLOR_PAIR(1));                                //启用“白底黑字”输出
     switch (i) {                                                //选择输出行
         case 1:
-            mvwprintw(win,1,1,"%s","1──────创建(Create)");
+            mvwprintw(win,1,1,"%s","1──────Create");
         break;
         case 2:
-            mvwprintw(win,2,1,"%s","2──────修改(Update)");
+            mvwprintw(win,2,1,"%s","2──────Revise");
         break;
         case 3:
-            mvwprintw(win,3,1,"%s","3──────投票(Set)");
+            mvwprintw(win,3,1,"%s","3──────Vote");
         break;
         case 4:
-            mvwprintw(win,4,1,"%s","4──────显示(Show)");
+            mvwprintw(win,4,1,"%s","4──────Show");
         break;
         case 5:
-            mvwprintw(win,5,1,"%s","5──────保存(Save)");
+            mvwprintw(win,5,1,"%s","5──────Save");
         break;
         case 6:
-            mvwprintw(win,6,1,"%s","6──────帮助(Help)");
+            mvwprintw(win,6,1,"%s","6──────Help");
         break;
         case 7:
-            mvwprintw(win,7,1,"%s","7──────退出(Exit)");
+            mvwprintw(win,7,1,"%s","7──────Exit");
         break;
     }
     wmove(win, i, 1);                                       //移动光标到目标行
@@ -124,36 +124,35 @@ char* dbl2str(unsigned int n, double Dbl) {
 //帮助
 void printhelp(WINDOW *win, int SW, int SH) {
     touchwin(win);                                                  //窗口获取焦点
-    mvwprintw(win, 1, SW / 2 - 1, "帮助");                           //别想了，下面都是输出帮助
-    mvwprintw(win, 3, 5, "简单的投票系统(v?.something.whenever)");
-    mvwprintw(win, 5, 5, "1、感谢您有兴趣启动这个无聊的程序");
-    mvwprintw(win, 6, 8, "这个程序对中文输入支持不太好");
-    mvwprintw(win, 8, 5, "2、关于此程序的界面：");
-    mvwprintw(win, 9, 8, "─>这个窗口就是操作窗口<─");
-    mvwprintw(win, 10, 8, "左边这个是选择窗口的例子──────>");
+    mvwprintw(win, 1, SW / 2 - 1, "Help");                           //别想了，下面都是输出帮助
+    mvwprintw(win, 3, 5, "Simple vote (v?.something.whenever)");
+    mvwprintw(win, 5, 5, "1、Thanks you use this program");
+    mvwprintw(win, 6, 8, "Please not input Chinese");
+    mvwprintw(win, 8, 5, "2、About this interface：");
+    mvwprintw(win, 9, 8, "─>This is operating window<─");
+    mvwprintw(win, 10, 8, "There is select window ──────>");
     WINDOW *example;                                                //定义示例窗口
     example = newwin(12,23,6,WinX - 26);                            //将示例窗口定义到右边
     box(example, 0, 0);                                             //为示例窗口加上边框
-    mvwprintw(example, 2, 2, "1──────创建(Create)");                 //继续输出帮助
-    mvwprintw(example, 3, 2, "2──────修改(Update)");
-    mvwprintw(example, 4, 2, "3──────投票(Set)");
-    mvwprintw(example, 5, 2, "4──────显示(Show)");
-    mvwprintw(example, 6, 2, "5──────保存(Save)");
-    mvwprintw(example, 7, 2, "6──────帮助(Help)");
-    mvwprintw(example, 8, 2, "7──────退出(Exit)");
-    mvwprintw(example, 9, 2, "使用方向键上下选择");
-    mvwprintw(win, 11, 8, "然后认!真!阅!读!选择窗口的最后一行。");
-    mvwprintw(win, 13, 5, "3、关于操作窗口的提示");
-    mvwprintw(win, 14, 8, "(1).选创建就会创建新的候选人数据哦，");
-    mvwprintw(win, 15, 12, "原本内容的会被清除");
-    mvwprintw(win, 16, 8, "(2).用来修改候选人姓名或者得票比例");
-    mvwprintw(win, 17, 8, "(3).对候选人进行投票，注意退出之前要先选");
-    mvwprintw(win, 18, 12, "”下一个“哦");
-    mvwprintw(win, 19, 8, "(4).输出各候选人的得票和获选情况");
-    mvwprintw(win, 20, 8, "(5).将目前的投票数据保存到文件中");
-    mvwprintw(win, 21, 8, "(6).显示此帮助");
-    mvwprintw(win, 22, 8, "(7).退出程序");
-    mvwprintw(win, SH - 2, SW - 16, "由BoringCat制作");
+    mvwprintw(example, 2, 2, "1──────Create");                 //继续输出帮助
+    mvwprintw(example, 3, 2, "2──────Revise");
+    mvwprintw(example, 4, 2, "3──────Vote");
+    mvwprintw(example, 5, 2, "4──────Show");
+    mvwprintw(example, 6, 2, "5──────Save");
+    mvwprintw(example, 7, 2, "6──────Help");
+    mvwprintw(example, 8, 2, "7──────Exit");
+    mvwprintw(example, 9, 2, "Arrow keys to select");
+    mvwprintw(win, 11, 8, "Please read the last line of select window");
+    mvwprintw(win, 12, 8, "SERIOUSLY!!!!!!");
+    mvwprintw(win, 14, 5, "3、Tips of select window");
+    mvwprintw(win, 15, 8, "(1).Create new data of candidates");
+    mvwprintw(win, 16, 8, "(2).Revise the candidates info");
+    mvwprintw(win, 17, 8, "(3).Vote in 12 candidates, select<Next> to next one");
+    mvwprintw(win, 18, 8, "(4).Print vote info");
+    mvwprintw(win, 19, 8, "(5).Save data to file");
+    mvwprintw(win, 20, 8, "(6).Print this help");
+    mvwprintw(win, 21, 8, "(7).Exit");
+    mvwprintw(win, SH - 2, SW - 18, "Make by BoringCat");
     touchwin(example);                                              //将示例窗口移动到顶层
     wrefresh(win);                                                  //刷新显示窗口
     refresh();                                                      //刷新主窗口
@@ -184,9 +183,9 @@ void savefile(WINDOW *win, int SW, int SH) {
     box(Savef[0], 0, 0);                                            //为显示窗口绘制边框
     box(Savef[1], 0, 0);                                            //为输入窗口绘制边框
     refresh();                                                      //刷新主窗口以显示新建的窗口
-    mvwprintw(Savef[0], 2, 1, "请输入你想保存的文件名(默认:User.cfg):"); //输出文字提示
-    mvwprintw(Savef[0], 8, 12, "<取消>");                            //输出按钮
-    mvwprintw(Savef[0], 8, 32, "<确定>");
+    mvwprintw(Savef[0], 2, 1, "Please input file name(default:User.cfg):"); //输出文字提示
+    mvwprintw(Savef[0], 8, 12, "<Cancel>");                            //输出按钮
+    mvwprintw(Savef[0], 8, 32, "<Save>");
     mvwprintw(Savef[1], 1, 1, "%s", file);                          //输出默认文件名
     wrefresh(Savef[0]);                                             //刷新新建的窗口
     wrefresh(Savef[1]);
@@ -200,29 +199,29 @@ void savefile(WINDOW *win, int SW, int SH) {
         switch (key) {
             case 9:                                                 //用户按下了TAB
                 wattroff(Savef[0], COLOR_PAIR(2));                  //启用“黑底白字”输出
-                mvwprintw(Savef[0], 8, 12, "<取消>");                //重绘取消按钮
-                mvwprintw(Savef[0], 8, 32, "<确定>");                //重绘确定按钮
+                mvwprintw(Savef[0], 8, 12, "<Cancel>");                //重绘取消按钮
+                mvwprintw(Savef[0], 8, 32, "<Save>");                //重绘确定按钮
                 wattroff(Savef[0], COLOR_PAIR(2));                  //关闭“黑底白字”输出
-                mvwprintw(Savef[0], 7, 5, "               ");       //清除提示信息
+                mvwprintw(Savef[0], 7, 4, "                              ");//清除提示信息
                 if (i == 0) {                                       //如果光标在输入窗口
                     i++;                                            //移动光标
                     wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
-                    mvwprintw(Savef[0], 8, 12, "<取消>");            //输出取消按钮
+                    mvwprintw(Savef[0], 8, 12, "<Cancel>");            //输出取消按钮
                     wattroff(Savef[0], COLOR_PAIR(1));              //关闭“白底黑字”输出
-                    wmove(Savef[0], 8, 12);                         //移到<取消>上
+                    wmove(Savef[0], 8, 12);                         //移到<Cancel>上
                     wrefresh(Savef[0]);                             //刷新窗口
                     break;
                 }
                 if (i == 1) {                                       //如果光标在<>上
                     i++;                                            //移动光标
                     wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
-                    mvwprintw(Savef[0], 8, 32, "<确定>");            //输出确定按钮
+                    mvwprintw(Savef[0], 8, 32, "<Save>");            //输出确定按钮
                     wattroff(Savef[0], COLOR_PAIR(1));              //启用“白底黑字”输出
                     wrefresh(Savef[0]);                             //刷新窗口
-                    wmove(Savef[0], 8, 32);                         //移到<确定>上
+                    wmove(Savef[0], 8, 32);                         //移到<Enter>上
                     break;
                 }
-                if (i == 2) {                                       //如果光标在<确定>上
+                if (i == 2) {                                       //如果光标在<Enter>上
                     i = 0;                                          //移动光标
                     wmove(Savef[0], 5, 2 + pn);                     //移到输入窗口上
                     break;
@@ -230,17 +229,17 @@ void savefile(WINDOW *win, int SW, int SH) {
             break;
             case 353:                                               //用户按下了Shift+TAB
                 wattroff(Savef[0], COLOR_PAIR(2));                  //启用“黑底白字”输出
-                mvwprintw(Savef[0], 8, 12, "<取消>");                //重绘取消按钮
-                mvwprintw(Savef[0], 8, 32, "<确定>");                //重绘确定按钮
+                mvwprintw(Savef[0], 8, 12, "<Cancel>");                //重绘取消按钮
+                mvwprintw(Savef[0], 8, 32, "<Save>");                //重绘确定按钮
                 wattroff(Savef[0], COLOR_PAIR(2));                  //关闭“黑底白字”输出
-                mvwprintw(Savef[0], 7, 5, "             ");         //清除提示信息
+                mvwprintw(Savef[0], 7, 4, "                              ");         //清除提示信息
                 if (i == 0) {                                       //如果光标在输入窗口
                     i = 2;                                          //移动光标
                     wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
-                    mvwprintw(Savef[0], 8, 32, "<确定>");            //输出确定按钮
+                    mvwprintw(Savef[0], 8, 32, "<Save>");            //输出确定按钮
                     wattroff(Savef[0], COLOR_PAIR(1));              //关闭“白底黑字”输出
                     wrefresh(Savef[0]);
-                    wmove(Savef[0], 8, 32);                         //移到<确定>上
+                    wmove(Savef[0], 8, 32);                         //移到<Enter>上
                     break;
                 }
                 if (i == 1) {                                       //如果光标在<>上
@@ -248,28 +247,30 @@ void savefile(WINDOW *win, int SW, int SH) {
                     wmove(Savef[0], 5, 2 + pn);                     //移到输入窗口上
                     break;
                 }
-                if (i == 2) {                                       //如果光标在<确定>上
+                if (i == 2) {                                       //如果光标在<Enter>上
                     i--;                                            //移动光标
                     wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
-                    mvwprintw(Savef[0], 8, 12, "<取消>");            //输出按钮
+                    mvwprintw(Savef[0], 8, 12, "<Cancel>");            //输出按钮
                     wattroff(Savef[0], COLOR_PAIR(1));              //关闭“白底黑字”输出
-                    wmove(Savef[0], 8, 12);                         //移到<取消>上
+                    wmove(Savef[0], 8, 12);                         //移到<Cancel>上
                     wrefresh(Savef[0]);                             //刷新窗口
                     break;
                 }
             break;
+            case 27:
+                i = 1;
             case 10:                                                //用户按下了Enter
-                if (i == 1) goto end;                               //如果光标在<取消>上，就退出
-                if (i == 2) goto start;                             //如果光标在<确定>上，就继续
+                if (i == 1) goto end;                               //如果光标在<Cancel>上，就退出
+                if (i == 2) goto start;                             //如果光标在<Enter>上，就继续
                 if (i == 0) {                                       //如果光标在输入窗口上
-                    mvwprintw(Savef[0], 7, 5, "按TAB键切换光标");     //输出提示
+                    mvwprintw(Savef[0], 7, 4, "Use TAB to select button");     //输出提示
                     wmove(Savef[0], 5, 2 + pn);                     //复位光标
                     wrefresh(Savef[0]);                             //刷新窗口
                 }
             break;
             case 127:                                               //按下退格键
                 getyx(Savef[0],y,x);                                //获取光标位置，储存在x和y中
-                mvwprintw(Savef[0], 7, 5, "             ");         //清除提示信息
+                mvwprintw(Savef[0], 7, 4, "                              ");         //清除提示信息
                 wmove(Savef[0], y, x);                              //光标复位
                 if (x - 1 >= 2) {                                   //如果有数据需要删除
                     mvwprintw(Savef[0], y, x - 1, " ");             //清除按下按键产生的字符和需要删除的字符
@@ -297,7 +298,8 @@ void savefile(WINDOW *win, int SW, int SH) {
             case KEY_RIGHT:
             case KEY_UP:
                 if (i != 0) {                                       //如果光标在输入窗口上
-                    mvwprintw(Savef[0], 7, 5, "按TAB键切换光标");     //输出提示
+                    mvwprintw(Savef[0], 7, 4, "                              ");         //清除提示信息
+                    mvwprintw(Savef[0], 7, 4, "Use TAB to select button");     //输出提示
                     wmove(Savef[0], 5, 2 + pn);                     //复位光标
                     wrefresh(Savef[0]);                             //刷新窗口
                 }
@@ -305,7 +307,8 @@ void savefile(WINDOW *win, int SW, int SH) {
             default:
                 getyx(Savef[0], y, x);                              //获取光标位置，储存在x和y中
                 if (p > 45) {                                       //如果超出显示范围
-                    mvwprintw(Savef[0], 7, 5, "文件名过长！");        //提示文件名过长
+                    mvwprintw(Savef[0], 7, 4, "                              ");         //清除提示信息
+                    mvwprintw(Savef[0], 7, 4, "File name is too long!");        //提示文件名过长
                     wmove(Savef[0], y, x);                          //光标复位
                     break;
                 }
@@ -345,7 +348,8 @@ void savefile(WINDOW *win, int SW, int SH) {
                                 Chinese[1] = 0;                     //清除输入的中文
                                 Chinese[2] = 0;                     //清除输入的中文
                                 IsInputChinese = 0;                 //设定中文输入数量
-                                mvwprintw(Savef[0], 7, 5, "文件名过长！");//输出提示信息
+                                mvwprintw(Savef[0], 7, 4, "                              ");         //清除提示信息
+                                mvwprintw(Savef[0], 7, 4, "File name is too long!");//输出提示信息
                                 wmove(Savef[0], y, x);              //光标复位
                                 break;
                             }
@@ -368,7 +372,7 @@ void savefile(WINDOW *win, int SW, int SH) {
         strcpy(file, "User.cfg");                                   //设定文件名为默认文件名
     if ((fw = fopen(file, "w")) == NULL) {
         wclear(win);                                                //清除输出窗口
-        mvwprintw(win, SH / 2, SW / 2 - 8, "%s", "无法打开保存文件");
+        mvwprintw(win, SH / 2, SW / 2 - 8, "%s%s", "can`t open ", file);
         wrefresh(win);                                              //刷新输出窗口
     }
     for (size_t i = 0; i < 12; i++) {
@@ -408,9 +412,9 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
     keypad(win, TRUE);                                              //允许处理键盘输入值
     switch (Status) {                                               //确定操作 0：创建 1：修改
         case 0:                                                     //创建操作下不会获取名字字符串长度
-            mvwprintw(win, 2, SW /2 - 10 , "请指定得票比例%%");        //输出提示
-            mvwprintw(win, SH -  2, 10 , "按<ESC>退出");
-            wmove(win, 2, SW /2 +4);                                //移动光标到输入位置
+            mvwprintw(win, 2, SW /2 - 11 , "Candidate Will pass at %%");        //输出提示
+            mvwprintw(win, SH -  2, 10 , "Press <ESC> Exit");
+            wmove(win, 2, SW /2 +12);                                //移动光标到输入位置
             while (1) {
                 getyx(win, y, x);                                   //获取光标位置，储存在x和y中
                 key = wgetch(win);                                  //从键盘读取值，类似于getchar()
@@ -446,23 +450,23 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
             if (Np > 100) Np = 100;                                 //如果大于100就设成100
             wclear(win);                                            //清除窗口重绘
             box(win, 0, 0);                                         //为窗口加上边框
-            mvwprintw(win, 1, SW/2 - 3, "%s", "投票系统");            //输出标题
-            mvwprintw(win, 2, 1, "%s", "共有12位候选人：");            //输出提示
-            mvwprintw(win, 2, SW - 21, "%s", "请为你喜欢的候选人+1s");
+            mvwprintw(win, 1, SW/2 - 6, "%s", "Vote system");            //输出标题
+            mvwprintw(win, 2, 1, "%s", "There are 12 Candidates：");            //输出提示
+            mvwprintw(win, 2, SW - 28, "%s", "Please choose which you like");
             for (size_t j = 1; j <= 12; j++) {                      //设置候选人输入位置
-                mvwprintw(win, 5 + (int)((j-1) / 2) * 3, (j%2==0)?SW / 2 + 5:5, "%s%d%s", "NO.", j, ":");
+                mvwprintw(win, 5 + (int)((j-1) / 2) * 3, (j%2==0)?SW / 2 + 3:3, "%s%d%s", "NO.", j, ":");
                 score[j-1] = 0;                                     //初始化得票
             }
             delName();                                              //初始化候选人名字
             Nscore = 0;                                             //初始化投票次数
         break;
         case 1:                                                     //如果用户选择修改
-            mvwprintw(win, 1, SW/2 - 3, "%s", "投票系统");            //输出标题
-            mvwprintw(win, 2, 1, "%s", "共有12位候选人：");            //输出提示
-            mvwprintw(win, 2, SW - 21, "%s", "请为你喜欢的候选人+1s");
+            mvwprintw(win, 1, SW/2 - 6, "%s", "Vote system");            //输出标题
+            mvwprintw(win, 2, 1, "%s", "There are 12 Candidates：");            //输出提示
+            mvwprintw(win, 2, SW - 28, "%s", "Please choose which you like");
             for (size_t k = 0; k < 6; k++) {                        //设置候选人输入位置以及输出名字
-                mvwprintw(win, 5 + (int)k * 3, 5, "%s%d%s%s", "NO.", k * 2 + 1, ":", Name[k*2]);//输出已输入的候选人名字
-                mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5, "%s%d%s%s", "NO.", k * 2 + 2, ":", Name[k*2+1]);
+                mvwprintw(win, 5 + (int)k * 3, 3, "%s%d%s%s", "NO.", k * 2 + 1, ":", Name[k*2]);//输出已输入的候选人名字
+                mvwprintw(win, 5 + (int)k * 3, SW / 2 + 3, "%s%d%s%s", "NO.", k * 2 + 2, ":", Name[k*2+1]);
                 p[k*2] =longofstring(Name[k*2],0);                  //获取名字字符串长度
                 p[k*2+1] =longofstring(Name[k*2+1],0);
                 psl[k*2] =longofstring(Name[k*2],1);                //获取名字字符串显示长度
@@ -471,12 +475,12 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
         break;
     }
     s = dbl2str(10, Np);                                            //将得票比例转换为字符串保存，方便输入
-    mvwprintw(win, 24, 5, "%s%s%%", "得票比例：", s);                 //输出得票比例输入位置
+    mvwprintw(win, 24, 3, "%s%s%%", "Candidate Will pass at:", s);                 //输出得票比例输入位置
     p[12] = longofstring(s,0);                                      //设置得票比例的字符串长度
-    psl[12] = 4 + longofstring(s,1);                                //设置得票比例的字符串显示长度
-    mvwprintw(win, SH - 2, 5, "%s", "方向键移动光标\t\t<Enter>保存\t\t没得不保存退出");//输出提示
+    psl[12] = 17 + longofstring(s,1);                                //设置得票比例的字符串显示长度
+    mvwprintw(win, SH - 2, 5, "%s", "Arrow keys to select\t<Enter> to save");//输出提示
     kx = 5;                                                         //初始化光标坐标变量
-    ky = 10 + psl[0];
+    ky = 8 + psl[0];
     wmove(win, kx, ky);                                             //将光标移动到一号上
     wrefresh(win);                                                  //刷新窗口
     while(1){                                                       //获取键盘操作
@@ -489,11 +493,11 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                         i -= 2;                                     //更改光标索引
                         if (i < 10) ys = 0;                         //如果光标移动到10号以前，取消偏移值
                         if (i % 2 == 0) {                           //判断光标纵向位置
-                            kmy = SW / 2 + 10 + ys;                 //设置输入范围开始位置
+                            kmy = SW / 2 + 8 + ys;                 //设置输入范围开始位置
                             ky = kmy + psl[i-1];                    //计算字符串结尾位置
                         }
                         else {                                      //光标在第一列
-                            kmy = 10 + ys;                          //设置输入范围开始位置
+                            kmy = 8 + ys;                          //设置输入范围开始位置
                             ky = kmy + psl[i-1];                    //计算字符串结尾位置
                     }
                     wmove(win, kx, ky);                             //移动光标
@@ -505,11 +509,11 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                     if (i >= 10 ) ys = 1;                           //如果光标移动到10号以后，设置偏移值
                     kx += 3;                                        //光标向下移动3格
                     if (i % 2 == 0) {                               //判断光标纵向位置，光标在第二列
-                        kmy = SW / 2 + 10 + ys;                     //设置输入范围开始位置
+                        kmy = SW / 2 + 8 + ys;                     //设置输入范围开始位置
                         ky = kmy + psl[i-1];                        //计算字符串结尾位置
                     }
                     else {                                          //光标在第一列
-                        kmy = 10 + ys;                              //设置输入范围开始位置
+                        kmy = 8 + ys;                              //设置输入范围开始位置
                         ky = kmy + psl[i-1];                        //计算字符串结尾位置
                     }
                     wmove(win, kx, ky);                             //移动光标
@@ -518,7 +522,7 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                     i = 13;                                         //此时只需把光标移至第十三位
                     if (i >= 10 ) ys = 1;                           //如果光标移动到10号以后，设置偏移值
                     kx = 24;                                        //光标向下移动到得票比例上
-                    kmy = 10 + ys;
+                    kmy = 8 + ys;
                     ky = kmy + psl[i-1];
                     wmove(win, kx, ky);                             //移动光标
                 }
@@ -529,7 +533,7 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                     if((i % 2) == 0){                               //判断光标纵向位置，光标在第二列
                         i -= 1;                                     //更改光标索引
                         if (i < 10) ys = 0;                         //如果光标移动到10号以前，取消偏移值
-                        kmy = 10 + ys;                              //设置输入范围开始位置
+                        kmy = 8 + ys;                              //设置输入范围开始位置
                         ky = kmy + psl[i-1];                        //计算字符串结尾位置
                         wmove(win, kx, ky);                         //移动光标
                     }
@@ -538,7 +542,7 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                         else kx -= 3;                               //否则就移动3格
                         i -= 1;                                     //更改光标索引
                         if (i < 10) ys = 0;                         //如果光标移动到10号以前，取消偏移值
-                        kmy = SW / 2 + 10 + ys;                     //设置输入范围开始位置
+                        kmy = SW / 2 + 8 + ys;                     //设置输入范围开始位置
                         ky = kmy + psl[i-1];                        //计算字符串结尾位置
                         wmove(win, kx, ky);                         //移动光标
                     }
@@ -550,7 +554,7 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                     if((i % 2) == 0){                               //判断光标纵向位置，光标在第二列
                         i += 1;                                     //更改光标索引
                         if (i >= 10 ) ys = 1;                       //如果光标移动到10号以后，设置偏移值
-                        kmy = 10 + ys;                              //设置输入范围开始位置
+                        kmy = 8 + ys;                              //设置输入范围开始位置
                         ky = kmy + psl[i-1];                        //计算字符串结尾位置
                         kx += 3;                                    //光标向下移动3格
                         wmove(win, kx, ky);                         //移动光标
@@ -558,7 +562,7 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                     else{                                           //光标在第一列
                         i += 1;                                     //更改光标索引
                         if (i >= 10 ) ys = 1;                       //如果光标移动到10号以后，设置偏移值
-                        kmy = SW / 2 + 10 + ys;                     //设置输入范围开始位置
+                        kmy = SW / 2 + 8 + ys;                     //设置输入范围开始位置
                         ky = kmy + psl[i-1];                        //计算字符串结尾位置
                         wmove(win, kx, ky);                         //移动光标
                     }
@@ -567,7 +571,7 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                     i = 13;                                         //此时只需把光标移至第十三位
                     if (i >= 10) ys = 1;                            //如果光标移动到10号以后，设置偏移值
                     kx = 24;                                        //光标向下移动到得票比例上
-                    kmy = 10 + ys;
+                    kmy = 8 + ys;
                     ky = kmy + psl[i-1];
                     wmove(win, kx, ky);                             //移动光标
                 }
@@ -693,10 +697,10 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
 void WinSet(WINDOW *win, int SW) {
     int p[14];                                                      //名字字符串长度
     touchwin(win);                                                  //窗口移至顶端
-    mvwprintw(win, 1, SW/2 - 2, "%s", "请投票");                     //在屏幕上输出候选人的名字和投票勾选框
-    mvwprintw(win, 2, 1, "%s", "共有12位候选人：");
-    mvwprintw(win, 2, SW - 22, "%s", "请为你喜欢的候选人+1s");
-    mvwprintw(win, 3, 1, "%s%d%s", "已有",Nscore,"人投票");
+    mvwprintw(win, 1, SW/2 - 6, "%s", "Please vote");                     //在屏幕上输出候选人的名字和投票勾选框
+    mvwprintw(win, 2, 1, "%s", "There are 12 Candidates：");            //输出提示
+    mvwprintw(win, 2, SW - 28, "%s", "Please choose which you like");
+    mvwprintw(win, 3, 1, "%s%d%s", "There are ", Nscore, " voter total"); //输出投票信息
     for (size_t k = 0; k < 6; k++) {
         p[k*2] =longofstring(Name[k*2],1);                          //获取名字字符串长度
         p[k*2+1] =longofstring(Name[k*2+1],1);                      //获取名字字符串长度
@@ -705,8 +709,8 @@ void WinSet(WINDOW *win, int SW) {
         mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5, "%s", Name[k*2+1]);
         mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5 + p[k*2+1], ":[ ]");
     }
-    mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
-    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+    mvwprintw(win, 23, 14, "%s", "<Exit>");                          //输出退出按钮
+    mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");                //输出下一个按钮
     p[12] = 7;                                                      //设定选项的偏差值
     p[13] = 7;
     int key, i = 1, kx = 5, ky = 5 + p[0] + 2;                      //设定光标移动所需变量
@@ -722,8 +726,8 @@ void WinSet(WINDOW *win, int SW) {
             case KEY_UP:                                            //按下方向键上
                 if(i > 2){                                          //判断光标位置索引
                     wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                    mvwprintw(win, 23, 14, "%s", "<Exit>");
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                     wattroff(win, COLOR_PAIR(2));
                     i -= 2;                                         //更改光标索引
                     kx -= 3;                                        //光标向上移动3格
@@ -739,18 +743,18 @@ void WinSet(WINDOW *win, int SW) {
             case KEY_DOWN:                                          //按下方向键下
                 if(i < 13){                                         //判断光标位置索引
                     wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                    mvwprintw(win, 23, 14, "%s", "<Exit>");
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                     wattroff(win, COLOR_PAIR(2));
                     i += 2;                                         //更改光标索引
                     if (i == 13) {
                         wattron(win, COLOR_PAIR(1));
-                        mvwprintw(win, 23, 14, "%s", "<退出>");
+                        mvwprintw(win, 23, 14, "%s", "<Exit>");
                         wattroff(win, COLOR_PAIR(1));
                     }
                     if (i == 14) {
                         wattron(win, COLOR_PAIR(1));
-                        mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                        mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                         wattroff(win, COLOR_PAIR(1));
                     }
                     kx += 3;                                        //光标向下移动3格
@@ -767,8 +771,8 @@ void WinSet(WINDOW *win, int SW) {
             case KEY_LEFT:                                          //按下方向键左
                 if (i > 1) {                                        //判断光标位置索引
                     wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                    mvwprintw(win, 23, 14, "%s", "<Exit>");
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                     wattroff(win, COLOR_PAIR(2));
                     if((i % 2) == 0){                               //判断光标纵向位置，光标在第一列
                         i -= 1;                                     //更改光标索引
@@ -781,12 +785,12 @@ void WinSet(WINDOW *win, int SW) {
                     }
                     if (i == 13) {
                         wattron(win, COLOR_PAIR(1));
-                        mvwprintw(win, 23, 14, "%s", "<退出>");
+                        mvwprintw(win, 23, 14, "%s", "<Exit>");
                         wattroff(win, COLOR_PAIR(1));
                     }
                     if (i == 14) {
                         wattron(win, COLOR_PAIR(1));
-                        mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                        mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                         wattroff(win, COLOR_PAIR(1));
                     }
                     wmove(win, kx, ky);                         //移动光标
@@ -796,8 +800,8 @@ void WinSet(WINDOW *win, int SW) {
             case KEY_RIGHT:                                         //按下方向键右
                 if (i < 14){                                        //判断光标位置索引
                     wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                    mvwprintw(win, 23, 14, "%s", "<Exit>");
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                     wattroff(win, COLOR_PAIR(2));
                     if((i % 2) == 0){                               //判断光标纵向位置，光标在第二列
                         i += 1;                                     //更改光标索引
@@ -810,12 +814,12 @@ void WinSet(WINDOW *win, int SW) {
                     }
                     if (i == 13) {
                         wattron(win, COLOR_PAIR(1));
-                        mvwprintw(win, 23, 14, "%s", "<退出>");
+                        mvwprintw(win, 23, 14, "%s", "<Exit>");
                         wattroff(win, COLOR_PAIR(1));
                     }
                     if (i == 14) {
                         wattron(win, COLOR_PAIR(1));
-                        mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                        mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                         wattroff(win, COLOR_PAIR(1));
                     }
                     wmove(win, kx, ky);                         //移动光标
@@ -827,25 +831,25 @@ void WinSet(WINDOW *win, int SW) {
                 kx = 23;                                            //退出键纵向坐标
                 wmove(win, kx, ky);                                 //移动光标
             case 10:                                                //按下回车
-                if (i == 13) {                                      //如果光标在<退出>上
+                if (i == 13) {                                      //如果光标在<Exit>上
                     WINDOW *sure;                                   //新建警告窗口
                     init_pair(1,COLOR_BLACK,COLOR_WHITE);
                     init_pair(2,COLOR_WHITE,COLOR_BLACK);
                     sure = newwin(8, 30, WinY / 2 - 4, WinX / 2 - 15);//确定窗口大小和位置
                     box(sure, 0, 0);                                //绘制边框
-                    mvwprintw(sure, 2, 8, "%s", "确定要退出吗？");     //输出确认信息
+                    mvwprintw(sure, 2, 6, "%s", "Make sure to exit?");     //输出确认信息
                     for (size_t n = 0; n < 12; n++) {               //检索残余的数据
                         if (setscore[n] != 0) {                     //如果有投票
-                        mvwprintw(sure, 3, 7, "%s", "本次投票尚未保存！");//输出多一句警告
+                        mvwprintw(sure, 3, 3, "%s", "This voter will not save");//输出多一句警告
                         }
                     }
                     wattron(sure, COLOR_PAIR(1));
-                    mvwprintw(sure, 5, 4, "%s","<取消>");             //绘制"取消"键
+                    mvwprintw(sure, 5, 4, "%s","<Cancel>");             //绘制"取消"键
                     wattroff(sure, COLOR_PAIR(1));
-                    mvwprintw(sure, 5, 20, "%s","<确定>");            //绘制"确定"键
+                    mvwprintw(sure, 5, 20, "%s","<Sure>");            //绘制"确定"键
                     touchwin(sure);                                 //警告窗口获取焦点
                     wrefresh(win);                                  //刷新父窗口
-                    wmove(sure, 5, 4);                              //移动光标到<取消>上
+                    wmove(sure, 5, 4);                              //移动光标到<Cancel>上
                     keypad(sure, TRUE);                             //允许处理键盘输入值
                     wrefresh(sure);                                 //刷新窗口
                     int si = 0;                                     //光标位置索引
@@ -855,45 +859,45 @@ void WinSet(WINDOW *win, int SW) {
                             case KEY_LEFT:                          //按下方向键左
                                 if (si == 1) {                      //判断光标位置索引
                                     wattron(sure, COLOR_PAIR(2));
-                                    mvwprintw(sure, 5, 20, "%s","<确定>");            //绘制"确定"键
+                                    mvwprintw(sure, 5, 20, "%s","<Sure>");            //绘制"确定"键
                                     wattroff(sure, COLOR_PAIR(2));
                                     wattron(sure, COLOR_PAIR(1));
-                                    mvwprintw(sure, 5, 4, "%s","<取消>");             //绘制"取消"键
+                                    mvwprintw(sure, 5, 4, "%s","<Cancel>");             //绘制"取消"键
                                     wattroff(sure, COLOR_PAIR(1));
-                                    wmove(sure, 5, 4);              //移动光标到<取消>上
-                                    si = 0;                         //设置光标索引在<取消>上
+                                    wmove(sure, 5, 4);              //移动光标到<Cancel>上
+                                    si = 0;                         //设置光标索引在<Cancel>上
                                 }
                                 break;
                             case KEY_RIGHT:                         //按下方向键右
                                 if (si == 0) {                      //判断光标位置索引
                                     wattron(sure, COLOR_PAIR(2));
-                                    mvwprintw(sure, 5, 4, "%s","<取消>");             //绘制"取消"键
+                                    mvwprintw(sure, 5, 4, "%s","<Cancel>");             //绘制"取消"键
                                     wattroff(sure, COLOR_PAIR(2));
                                     wattron(sure, COLOR_PAIR(1));
-                                    mvwprintw(sure, 5, 20, "%s","<确定>");            //绘制"确定"键
+                                    mvwprintw(sure, 5, 20, "%s","<Sure>");            //绘制"确定"键
                                     wattroff(sure, COLOR_PAIR(1));
-                                    wmove(sure, 5, 20);             //移动光标到<确定>上
-                                    si = 1;                         //设置光标索引在<确定>上
+                                    wmove(sure, 5, 20);             //移动光标到<Enter>上
+                                    si = 1;                         //设置光标索引在<Enter>上
                                 }
                                 break;
                             case 10:                                //按下回车
                                 delwin(sure);                       //删除窗口
                                 refresh();                          //刷新终端窗口
                                 wrefresh(win);                      //刷新父窗口
-                                if (si == 1) {                      //判断光标位置索引在<确定>上
+                                if (si == 1) {                      //判断光标位置索引在<Enter>上
                                     goto end;                       //跳出整个函数
                                 }
-                                goto endsure;                       //跳出<退出>窗口判定
+                                goto endsure;                       //跳出<Exit>窗口判定
                                 break;
                         }
                         wrefresh(sure);                             //每更改一次光标位置就刷新一次
                     }
-                    endsure:                                        //<退出>窗口跳出点
+                    endsure:                                        //<Exit>窗口跳出点
                     touchwin(win);                                  //将焦点还给父窗口
                     wmove(win, kx, ky);                             //还原光标位置
                     break;
                 }
-                if (i == 14) {                                      //如果光标在<下一个>上
+                if (i == 14) {                                      //如果光标在<Next>上
                     Nscore++;                                       //投票人递加1
                     for (size_t i = 0; i < 12; i++) {               //检索投票情况
                         if (setscore[i] == 1) score[i]++;           //如果投了他一票
@@ -903,13 +907,13 @@ void WinSet(WINDOW *win, int SW) {
                         mvwprintw(win, kx, ky, " ");                //清除屏幕信息
                     }
                     wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
+                    mvwprintw(win, 23, 14, "%s", "<Exit>");
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<Next>");
                     wattroff(win, COLOR_PAIR(2));
                     i = 1;                                          //初始化光标索引
                     kx = 5;                                         //初始化光标纵向位置
                     ky = 5 + p[0] + 2;                              //初始化光标横向位置
-                    mvwprintw(win, 3, 1, "%s%d%s", "已有",Nscore,"人投票");//更新投票信息
+                    mvwprintw(win, 3, 1, "%s%d%s", "There are ", Nscore, " voter total"); //更新投票信息
                     wmove(win, kx, ky);                             //初始化光标位置
                     break;
                 }                                                   //如果光标不在操作按钮上
@@ -940,38 +944,39 @@ void WinShow(WINDOW *win, int SW) {
     WINDOW *cwin[5];                                                //创建信息窗口
     double p = 0;                                                   //定义候选人得票比例
     touchwin(win);                                                  //窗口获取焦点
-    mvwprintw(win, 1, SW/2 - 3, "%s", "投票结果");                   //输出标题
-    mvwprintw(win, 2, (SW-70)/2, "%s%d%s", "总共", Nscore, "人投票"); //输出投票信息
-    mvwprintw(win, 2, (SW-70)/2 + 54, "%s%-.4g%s", "得票比例", Np, "%即通过");//输出投票信息
-    cwin[0] = newwin(15, 14, 5, (SW-74)/2 + 25);                    //信息窗口大小和位置
-    cwin[1] = newwin(15, 34, 5, (SW-74)/2 + 38);
-    cwin[2] = newwin(15, 8, 5, (SW-74)/2 + 71);
-    cwin[3] = newwin(15, 10, 5, (SW-74)/2 + 78);
-    cwin[4] = newwin(15, 12, 5, (SW-74)/2 + 87);
+    mvwprintw(win, 1, SW/2 - 7, "%s", "Voting results");                   //输出标题
+    mvwprintw(win, 2, (SW-74)/2 + 3, "%s%d%s", "There are ", Nscore, " voter total"); //输出投票信息
+    mvwprintw(win, 2, (SW-70)/2 + 60, "%s%-.4g%s", "Pass at ", Np, "%");//输出投票信息
+    cwin[0] = newwin(15, 7, 5, (SW-74)/2 + 27);                    //信息窗口大小和位置
+    cwin[1] = newwin(15, 35, 5, (SW-74)/2 + 33);
+    cwin[2] = newwin(15, 10, 5, (SW-74)/2 + 67);
+    cwin[3] = newwin(15, 11, 5, (SW-74)/2 + 75);
+    cwin[4] = newwin(15, 12, 5, (SW-74)/2 + 85);
     for (size_t n = 0; n < 5; n++) {
         box(cwin[n], 0, 0);                                         //绘制边框
     }
-    mvwprintw(cwin[0], 1, 2, "%s", "候选者编号");                    //输出信息窗口标题
-    mvwprintw(cwin[1], 1, 14, "%s", "姓名");
-    mvwprintw(cwin[2], 1, 2, "%s", "票数");
-    mvwprintw(cwin[3], 1, 2, "%s", "得票率");
-    mvwprintw(cwin[4], 1, 2, "%s", "是否中选");
+    mvwprintw(cwin[0], 1, 2, "%s", "NO.");                    //输出信息窗口标题
+    mvwprintw(cwin[1], 1, 14, "%s", "Name");
+    mvwprintw(cwin[2], 1, 2, "%s", "score");
+    mvwprintw(cwin[3], 1, 2, "%s", "Percent");
+    mvwprintw(cwin[4], 1, 3, "%s", "Passed");
     for (size_t i = 0; i < 12; i++) {                               //检索投票结果
-        if (i<9) mvwprintw(cwin[0], 2 + (int)i, 6, "%d", i+1);      //判断编号长度
-        else mvwprintw(cwin[0], 2 + (int)i, 5, "%d", i+1);
+        if (i<9) mvwprintw(cwin[0], 2 + (int)i, 3, "%d", i+1);      //判断编号长度
+        else mvwprintw(cwin[0], 2 + (int)i, 2, "%d", i+1);
         mvwprintw(cwin[1], 2 + (int)i, 2, "%s", Name[i]);           //输出候选人姓名
-        mvwprintw(cwin[2], 2 + (int)i, 3, "%d", score[i]);          //输出候选人得票
+        if (score[i] > 9) mvwprintw(cwin[2], 2 + (int)i, 3, "%d", score[i]);          //输出候选人得票
+        else mvwprintw(cwin[2], 2 + (int)i, 4, "%d", score[i]);          //输出候选人得票
         if (Nscore != 0) {                                          //判断候选人得票
             p = score[i]*100/(double)Nscore;                        //将得票百分比储存到p中
             if ((int)p == 100) {                                    //判断全票的人，避免输出1x10%2%
-                mvwprintw(cwin[3], 2 + (int)i, 3, "100%%");         //输出100%
+                mvwprintw(cwin[3], 2 + (int)i, 4, "100%%");         //输出100%
             }
-            else mvwprintw(cwin[3], 2 + (int)i, 3, "%.3g%%", p);    //输出得票比例
+            else mvwprintw(cwin[3], 2 + (int)i, 4, "%.3g%%", p);    //输出得票比例
             if (p >= Np) mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "True");//判断是否达标
             else mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "False");
         }
         else{                                                       //如果没有得票
-            mvwprintw(cwin[3], 2 + (int)i, 3, "0%%");               //输出0%
+            mvwprintw(cwin[3], 2 + (int)i, 4, "0%%");               //输出0%
             mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "False");       //输出False
         }
     }
@@ -995,8 +1000,8 @@ int main(int argc, char const *argv[]) {
     initscr();                                                      //初始化终端窗口
     getmaxyx(stdscr,WinY,WinX);                                     //获取终端大小，存在x与y中
     endwin();                                                       //释放终端
-    if (WinY < 29 || WinX < 101) {                                  //判断终端大小
-        printf("终端大小不够(%dx%d)，建议大于(101x29) , 是否继续?[Y/N] ", WinX, WinY);
+    if (WinY < 29 || WinX < 100) {                                  //判断终端大小
+        printf("Terminal is not big enough(%dx%d), Suggest bigger then(100x29), Continue?[Y/N] ", WinX, WinY);
         scanf("%c", &inp);
         if (inp != 'y' && inp != 'Y')  exit(1);
         scanf("%c", &inp);
@@ -1006,7 +1011,7 @@ int main(int argc, char const *argv[]) {
     if (argc >= 2) {                                                //如果有传入变量
         for (size_t i = 1; (int)i < argc; i++) {                    //遍历字符串
             if ((fr = fopen(argv[i], "r")) != NULL) {               //如果字符串是文件且存在能打开
-                printf("是否确定读取文件%s? [Y/N] ", argv[i]);         //询问用户是否读取该文件
+                printf("Make sure to load %s? [Y/N] ", argv[i]);    //询问用户是否读取该文件
                 scanf("%c", &inp);                                  //获取用户输入
                 if (inp == 'y' || inp == 'Y') {                     //判断以后输入值
                     for (size_t k = 0; k < 12; k++) {               //遍历文件数据并格式化读取
@@ -1041,7 +1046,8 @@ int main(int argc, char const *argv[]) {
     W1 = WinX - 25;                                                 //储存操作窗口的大小
     H1 = WinY - 2;
     PrintColorWord(win[0], 1);
-    mvwprintw(win[0],8,1,"%s","使用方向键上下选择");
+    mvwprintw(win[0],8,1,"%s","Arrow keys to select");
+    wmove(win[0], 1, 1);
     box(win[1],0,0);                                                //为操作窗口设定边框
     refresh();                                                      //刷新终端
     wrefresh(win[0]);                                               //刷新选择窗口
