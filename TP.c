@@ -10,6 +10,41 @@ unsigned int Nscore = 0;                                        //投票人数
 double Np = 50.0;
 int WinX = 0, WinY = 0;
 
+void PrintColorWord(WINDOW *win, int i) {
+    init_pair(1,COLOR_BLACK,COLOR_WHITE);
+    init_pair(2,COLOR_WHITE,COLOR_BLACK);
+    wattron(win, COLOR_PAIR(2));
+    mvwprintw(win,1,1,"%s","1——————创建(Create)");                //输出选项
+    mvwprintw(win,2,1,"%s","2——————修改(Update)");
+    mvwprintw(win,3,1,"%s","3——————投票(Set)");
+    mvwprintw(win,4,1,"%s","4——————显示(Show)");
+    mvwprintw(win,5,1,"%s","5——————保存(Save)");
+    mvwprintw(win,6,1,"%s","6——————退出(Exit)");
+    wattron(win, COLOR_PAIR(1));
+    switch (i) {
+        case 1:
+            mvwprintw(win,1,1,"%s","1——————创建(Create)");                //输出选项
+        break;
+        case 2:
+            mvwprintw(win,2,1,"%s","2——————修改(Update)");
+        break;
+        case 3:
+            mvwprintw(win,3,1,"%s","3——————投票(Set)");
+        break;
+        case 4:
+            mvwprintw(win,4,1,"%s","4——————显示(Show)");
+        break;
+        case 5:
+            mvwprintw(win,5,1,"%s","5——————保存(Save)");
+        break;
+        case 6:
+            mvwprintw(win,6,1,"%s","6——————退出(Exit)");
+        break;
+    }
+    wmove(win, i, 1);
+    wattroff(win, COLOR_PAIR(1));
+}
+
 //获取字符串的长度，用于光标定位
 int longofstring(char *str, int Status){
     int i = 0, n = 0;
@@ -623,6 +658,7 @@ int main(int argc, char const *argv[]) {
     int x, y, W1, H1;                                               //设定终端窗口大小变量
     int T = 0;                                                      //定义跳出变量
     int p = 0;                                                      //定义判断变量
+    int key;
     WINDOW *win[2];                                                 //设定窗口
     char input[10];                                                 //设定输入字符串
     setlocale(LC_ALL,"");                                           //设定字符串编码以支持中文
@@ -668,83 +704,87 @@ int main(int argc, char const *argv[]) {
     ReadFin:                                                        //配置文件读取跳出点
     initscr();                                                      //初始化终端窗口
     noecho();
+    start_color();
     win[0]=newwin(9,21,1,3);                                        //设定选择窗口的大小和位置
     win[1]=newwin(WinY - 2, WinX - 25,1,24);                              //设定操作窗口的大小和位置
     W1 = WinX - 25;                                                    //储存操作窗口的大小
     H1 = WinY - 2;
-    mvwprintw(win[0],1,1,"%s","1——————创建(Create)");                //输出选项
-    mvwprintw(win[0],2,1,"%s","2——————修改(Update)");
-    mvwprintw(win[0],3,1,"%s","3——————投票(Set)");
-    mvwprintw(win[0],4,1,"%s","4——————显示(Show)");
-    mvwprintw(win[0],5,1,"%s","5——————保存(Save)");
-    mvwprintw(win[0],6,1,"%s","6——————退出(Exit)");
-    mvwprintw(win[0],7,1,"%s","选择(Select)：");
+    PrintColorWord(win[0], 1);
+    mvwprintw(win[0],7,1,"%s","使用方向键上下选择");
     box(win[1],0,0);                                                //为操作窗口设定边框
     refresh();                                                      //刷新终端
     wrefresh(win[0]);                                               //刷新选择窗口
     wrefresh(win[1]);                                               //刷新操作窗口
     keypad(win[0], TRUE);
-    do {
-        p = 0;
+    p = 1;
+    while (1) {
         getmaxyx(stdscr,y,x);
         if (WinX != x || WinY != y) {
             WinX = x;
             WinY = y;
             wresize(win[1], y - 2, x - 25);
-            refresh();                                                      //刷新终端
+            refresh();                                              //刷新终端
         }
-        W1 = WinX - 27;                                                    //储存操作窗口的大小
+        W1 = WinX - 27;                                             //储存操作窗口的大小
         H1 = WinY - 2;
         touchwin(win[0]);                                           //选择窗口获取焦点
-        mvwprintw(win[0], 7, 15, "   ");                            //覆盖之前的输入
-        wmove(win[0], 7, 15);                                       //复位光标
-        echo();
-        wgetnstr(win[0], input, 1);                                 //获取一个选择字符
-        noecho();
-        mvwprintw(win[0], 7, 15, "%s", input);
-        mvwprintw(win[0], 8, 1, "%s", "          ");                //覆盖之前的错误提示
         wrefresh(win[0]);
-        wclear(win[1]);                                             //清除操作窗口
-        box(win[1],0,0);                                            //为操作窗口重新设定边框
-        if (strchr(input, '1') != 0) p = 1;                         //判断用户输入
-        if (strchr(input, '2') != 0) p = 2;
-        if (strchr(input, '3') != 0) p = 3;
-        if (strchr(input, '4') != 0) p = 4;
-        if (strchr(input, '5') != 0) p = 5;
-        if (strchr(input, '6') != 0) p = 6;
-        if (p == 6) {                                               //用户输入退出
-            T = 1;                                                  //设定退出函数
+        key = wgetch(win[0]);                                          //从键盘读取值，类似于getchar()
+        switch(key){                                                //判断按下的值
+            case 353:                                               //按下Shift+TAB
+            case KEY_UP:                                            //按下方向键上
+                if(p > 1) p--;
+                else if (p == 1) p = 6;
+                PrintColorWord(win[0], p);
+            break;
+            case 9:                                                 //按下TAB
+            case KEY_DOWN:                                          //按下方向键下
+                if(p < 6) p++;
+                else if (p == 6) p = 1;
+                PrintColorWord(win[0], p);
+            break;
+            case 10:                                                //按下回车
+            case 32:
+                if (p == 6) {                                               //用户输入退出
+                    delwin(win[0]);                                                 //删除操作窗口
+                    delwin(win[1]);                                                 //删除选择窗口
+                    endwin();                                                       //释放终端
+                    exit(0);                                                  //设定退出函数
+                }
+                else{
+                    switch (p) {
+                        case 1:                                             //用户输入创建
+                        wclear(win[1]);                                 //清除操作窗口
+                        box(win[1],0,0);                                //为操作窗口重新设定边框
+                        WinCU(win[1], W1, H1, 0);
+                        break;
+                        case 2:                                             //用户输入修改
+                        wclear(win[1]);                                 //清除操作窗口
+                        box(win[1],0,0);                                //为操作窗口重新设定边框
+                        WinCU(win[1], W1, H1, 1);
+                        break;
+                        case 3:                                             //用户输入投票
+                        wclear(win[1]);                                 //清除操作窗口
+                        box(win[1],0,0);                                //为操作窗口重新设定边框
+                        WinSet(win[1], W1);
+                        break;
+                        case 4:                                             //用户输入显示
+                        wclear(win[1]);                                 //清除操作窗口
+                        box(win[1],0,0);                                //为操作窗口重新设定边框
+                        WinShow(win[1], W1);
+                        break;
+                        case 5:                                             //用户输入保存
+                        wclear(win[1]);                                 //清除操作窗口
+                        box(win[1],0,0);                                //为操作窗口重新设定边框
+                        savefile(win[1], W1, H1, "User.cfg");
+                        WinShow(win[1], W1);
+                        break;
+                    }
+                    refresh();
+                    wrefresh(win[1]);                                       //刷新操作窗口
+                }
+            break;
         }
-        else{
-            switch (p) {
-                case 1:                                             //用户输入创建
-                    WinCU(win[1], W1, H1, 0);
-                break;
-                case 2:                                             //用户输入修改
-                    WinCU(win[1], W1, H1, 1);
-                break;
-                case 3:                                             //用户输入投票
-                    WinSet(win[1], W1);
-                break;
-                case 4:                                             //用户输入显示
-                    WinShow(win[1], W1);
-                break;
-                case 5:                                             //用户输入保存
-                    WinShow(win[1], W1);
-                    savefile(win[1], W1, H1, "User.cfg");
-                    break;
-                default:
-                    mvwprintw(win[0], 8, 1, "%s", "输入错误!");      //截获其他输入
-                    wrefresh(win[0]);                               //刷新选择窗口
-                    mvwprintw(win[0], 7, 15, "  ");                 //覆盖输入
-                    break;
-            }
-            refresh();
-            wrefresh(win[1]);                                       //刷新操作窗口
-        }
-    } while(T != 1);                                                //退出函数判断
-    delwin(win[0]);                                                 //删除操作窗口
-    delwin(win[1]);                                                 //删除选择窗口
-    endwin();                                                       //释放终端
+    }
     return 0;
 }
