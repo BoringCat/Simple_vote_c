@@ -288,6 +288,13 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                         if (s[p[i-1]-1] == 46) IsInputDot = 0;
                         s[--p[i-1]] = '\0';
                         psl[i-1]--;
+                        if (p[i-1] == 0) {
+                            Np = 50;
+                        }
+                        else{
+                            Np = str2dbl(s, 12);
+                            Np = Np>100?100:Np;
+                        }
                     }
                     break;
                 }
