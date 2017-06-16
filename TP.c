@@ -121,15 +121,16 @@ char* dbl2str(unsigned int n, double Dbl) {
     return s;                                                   //返回指针
 }
 
-//搞事的帮助
+//帮助
 void printhelp(WINDOW *win, int SW, int SH) {
     touchwin(win);                                                  //窗口获取焦点
     mvwprintw(win, 1, SW / 2 - 1, "帮助");                           //别想了，下面都是输出帮助
     mvwprintw(win, 3, 5, "简单的投票系统(v?.something.whenever)");
     mvwprintw(win, 5, 5, "1、感谢您有兴趣启动这个无聊的程序");
-    mvwprintw(win, 6, 8, "这个程序对中文输入支持不太好(问ncurses去啊)");
-    mvwprintw(win, 8, 5, "2、开始真正的帮助文档：");
-    mvwprintw(win, 9, 8, "首先你会看到这些文字(早就看到了)──────>");
+    mvwprintw(win, 6, 8, "这个程序对中文输入支持不太好");
+    mvwprintw(win, 8, 5, "2、关于此程序的界面：");
+    mvwprintw(win, 9, 8, "─>这个窗口就是操作窗口<─");
+    mvwprintw(win, 10, 8, "左边这个是选择窗口的例子──────>");
     WINDOW *example;                                                //定义示例窗口
     example = newwin(12,23,6,WinX - 26);                            //将示例窗口定义到右边
     box(example, 0, 0);                                             //为示例窗口加上边框
@@ -141,22 +142,18 @@ void printhelp(WINDOW *win, int SW, int SH) {
     mvwprintw(example, 7, 2, "6──────帮助(Help)");
     mvwprintw(example, 8, 2, "7──────退出(Exit)");
     mvwprintw(example, 9, 2, "使用方向键上下选择");
-    mvwprintw(win, 10, 8, "然后认!真!阅!读!最后一行。");
-    mvwprintw(win, 12, 5, "3、这才是关于操作窗口的提示哦");
-    mvwprintw(win, 13, 8, "(1).选创建就会创建新的候选人数据哦，");
-    mvwprintw(win, 14, 12, "原本的会消失的");
-    mvwprintw(win, 15, 8, "(2).想改候选人姓名或者得票比例的话，");
-    mvwprintw(win, 16, 12, "就选修改哦");
-    mvwprintw(win, 17, 8, "(3).所谓投票嘛，就是不停点点点哦，注意退出");
-    mvwprintw(win, 18, 12, "之前要先选”下一个“哦");
-    mvwprintw(win, 19, 8, "(4).“显示”下谁的得票最高哦！(当然是“今”啦)");
-    mvwprintw(win, 20, 8, "(5).如果想把数据存起来就选保存哦，记得写文件名哦");
-    mvwprintw(win, 21, 8, "(6).人家就是帮助啦，来嘛，来这里看看人家嘛");
-    mvwprintw(win, 22, 8, "(7).退出的时候要轻轻的哦，不要那么粗暴嘛，人家会不高兴的啦");
-    mvwprintw(win, 24, 5, "4、要记得，这个程序是有窗口的是有窗口的是有窗口的，不要单纯的认为");
-    mvwprintw(win, 25, 8, "是命令行模拟的(其实就是)");
-    mvwprintw(win, 26, 5, "5、其实这程序有规定窗口大小的啦(就是作者懒)。");
-    mvwprintw(win, 28, 8, "偷偷告诉你哦，终端大小小于 101x32 的都看不到这些(ge)内容的");
+    mvwprintw(win, 11, 8, "然后认!真!阅!读!选择窗口的最后一行。");
+    mvwprintw(win, 13, 5, "3、关于操作窗口的提示");
+    mvwprintw(win, 14, 8, "(1).选创建就会创建新的候选人数据哦，");
+    mvwprintw(win, 15, 12, "原本内容的会被清除");
+    mvwprintw(win, 16, 8, "(2).用来修改候选人姓名或者得票比例");
+    mvwprintw(win, 17, 8, "(3).对候选人进行投票，注意退出之前要先选");
+    mvwprintw(win, 18, 12, "”下一个“哦");
+    mvwprintw(win, 19, 8, "(4).输出各候选人的得票和获选情况");
+    mvwprintw(win, 20, 8, "(5).将目前的投票数据保存到文件中");
+    mvwprintw(win, 21, 8, "(6).显示此帮助");
+    mvwprintw(win, 22, 8, "(7).退出程序");
+    mvwprintw(win, SH - 2, SW - 16, "由BoringCat制作");
     touchwin(example);                                              //将示例窗口移动到顶层
     wrefresh(win);                                                  //刷新显示窗口
     refresh();                                                      //刷新主窗口
@@ -998,8 +995,8 @@ int main(int argc, char const *argv[]) {
     initscr();                                                      //初始化终端窗口
     getmaxyx(stdscr,WinY,WinX);                                     //获取终端大小，存在x与y中
     endwin();                                                       //释放终端
-    if (WinY < 32 || WinX < 101) {                                  //判断终端大小
-        printf("终端大小不够(%dx%d)，建议大于(101x32) , 是否继续?[Y/N] ", WinX, WinY);
+    if (WinY < 29 || WinX < 101) {                                  //判断终端大小
+        printf("终端大小不够(%dx%d)，建议大于(101x29) , 是否继续?[Y/N] ", WinX, WinY);
         scanf("%c", &inp);
         if (inp != 'y' && inp != 'Y')  exit(1);
         scanf("%c", &inp);
