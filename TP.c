@@ -492,6 +492,13 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
                         if (s[p[i-1]-1] == 46) IsInputDot = 0;      //如果删除了点，更改判断
                         s[--p[i-1]] = '\0';                         //从字符串中删除该字符
                         psl[i-1]--;
+                        if (p[i-1] == 0) {                          //如果得票比例为空
+                            Np = 50;                                //设置为50%
+                        }
+                        else{
+                            Np = str2dbl(s, 12);                    //设置得票比例
+                            Np = Np>100?100:Np;                     //如果大于100就设成100
+                        }
                     }
                     break;
                 }
