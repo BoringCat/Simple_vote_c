@@ -63,41 +63,6 @@ void PrintColorWord(WINDOW *win, int i) {
     wattroff(win, COLOR_PAIR(1));                           //关闭“白底黑字”输出
 }
 
-void PrintColorWord(WINDOW *win, int i) {
-    init_pair(1,COLOR_BLACK,COLOR_WHITE);
-    init_pair(2,COLOR_WHITE,COLOR_BLACK);
-    wattron(win, COLOR_PAIR(2));
-    mvwprintw(win,1,1,"%s","1——————创建(Create)");                //输出选项
-    mvwprintw(win,2,1,"%s","2——————修改(Update)");
-    mvwprintw(win,3,1,"%s","3——————投票(Set)");
-    mvwprintw(win,4,1,"%s","4——————显示(Show)");
-    mvwprintw(win,5,1,"%s","5——————保存(Save)");
-    mvwprintw(win,6,1,"%s","6——————退出(Exit)");
-    wattron(win, COLOR_PAIR(1));
-    switch (i) {
-        case 1:
-            mvwprintw(win,1,1,"%s","1——————创建(Create)");                //输出选项
-        break;
-        case 2:
-            mvwprintw(win,2,1,"%s","2——————修改(Update)");
-        break;
-        case 3:
-            mvwprintw(win,3,1,"%s","3——————投票(Set)");
-        break;
-        case 4:
-            mvwprintw(win,4,1,"%s","4——————显示(Show)");
-        break;
-        case 5:
-            mvwprintw(win,5,1,"%s","5——————保存(Save)");
-        break;
-        case 6:
-            mvwprintw(win,6,1,"%s","6——————退出(Exit)");
-        break;
-    }
-    wmove(win, i, 1);
-    wattroff(win, COLOR_PAIR(1));
-}
-
 //获取字符串的长度，用于光标定位
 int longofstring(char *str, int Status){
     int i = 0, n = 0;                                           //定义变量i为字符串长度，n为字符串显示长度
