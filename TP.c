@@ -258,6 +258,8 @@ void savefile(WINDOW *win, int SW, int SH) {
                     break;
                 }
             break;
+            case 27:
+                i = 1;
             case 10:                                                //用户按下了Enter
                 if (i == 1) goto end;                               //如果光标在<取消>上，就退出
                 if (i == 2) goto start;                             //如果光标在<确定>上，就继续
