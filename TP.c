@@ -24,8 +24,6 @@ char *IsMMP(int *str){                                          //过滤中文�
 
 //输出选择窗口带背景颜色的字体
 void PrintColorWord(WINDOW *win, int i) {
-    init_pair(1,COLOR_BLACK,COLOR_WHITE);                       //定义白底黑字
-    init_pair(2,COLOR_WHITE,COLOR_BLACK);                       //定义黑底白字
     wattron(win, COLOR_PAIR(2));                                //启用“黑底白字”输出
     mvwprintw(win,1,1,"%s","1──────创建(Create)");               //输出选项
     mvwprintw(win,2,1,"%s","2──────修改(Update)");
@@ -185,39 +183,47 @@ void savefile(WINDOW *win, int SW, int SH) {
     box(Savef[1], 0, 0);                                            //为输入窗口绘制边框
     refresh();                                                      //刷新主窗口以显示新建的窗口
     mvwprintw(Savef[0], 2, 1, "请输入你想保存的文件名(默认:User.cfg):"); //输出文字提示
+    wattron(Savef[0], COLOR_PAIR(4));
+    mvwprintw(Savef[0], 2, 23, "(默认:User.cfg)");
+    wattroff(Savef[0], COLOR_PAIR(4));
+    mvwprintw(Savef[0], 2, 38, ":");
+    wattron(Savef[0], COLOR_PAIR(5));
     mvwprintw(Savef[0], 8, 12, "<取消>");                            //输出按钮
+    wattroff(Savef[0], COLOR_PAIR(5));
+    wattron(Savef[0], COLOR_PAIR(6));
     mvwprintw(Savef[0], 8, 32, "<确定>");
+    wattroff(Savef[0], COLOR_PAIR(6));
     mvwprintw(Savef[1], 1, 1, "%s", file);                          //输出默认文件名
     wrefresh(Savef[0]);                                             //刷新新建的窗口
     wrefresh(Savef[1]);
     touchwin(Savef[1]);                                             //将输入出口移动到最顶端
     keypad(Savef[0], TRUE);                                         //允许窗口接键盘值
     wmove(Savef[0], 5, pn + 2);                                     //移动光标到文件名末尾
-    init_pair(1,COLOR_BLACK,COLOR_WHITE);                           //定义白底黑字
-    init_pair(2,COLOR_WHITE,COLOR_BLACK);                           //定义黑底白字
     while (1) {
         key = wgetch(Savef[0]);                                     //从键盘读取值，类似于getchar()
         switch (key) {
             case 9:                                                 //用户按下了TAB
-                wattroff(Savef[0], COLOR_PAIR(2));                  //启用“黑底白字”输出
+                wattron(Savef[0], COLOR_PAIR(5));
                 mvwprintw(Savef[0], 8, 12, "<取消>");                //重绘取消按钮
+                wattroff(Savef[0], COLOR_PAIR(5));
+                wattron(Savef[0], COLOR_PAIR(6));
                 mvwprintw(Savef[0], 8, 32, "<确定>");                //重绘确定按钮
-                wattroff(Savef[0], COLOR_PAIR(2));                  //关闭“黑底白字”输出
-                mvwprintw(Savef[0], 7, 5, "               ");       //清除提示信息
+                wattroff(Savef[0], COLOR_PAIR(6));
+                mvwprintw(Savef[0], 7, 3, "                   ");   //清除提示信息
                 if (i == 0) {                                       //如果光标在输入窗口
                     i++;                                            //移动光标
-                    wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
+                    wattron(Savef[0], COLOR_PAIR(25));               //启用“白底黑字”输出
                     mvwprintw(Savef[0], 8, 12, "<取消>");            //输出取消按钮
-                    wattroff(Savef[0], COLOR_PAIR(1));              //关闭“白底黑字”输出
+                    wattroff(Savef[0], COLOR_PAIR(25));              //关闭“白底黑字”输出
                     wmove(Savef[0], 8, 12);                         //移到<取消>上
                     wrefresh(Savef[0]);                             //刷新窗口
                     break;
                 }
                 if (i == 1) {                                       //如果光标在<>上
                     i++;                                            //移动光标
-                    wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
+                    wattron(Savef[0], COLOR_PAIR(26));               //启用“白底黑字”输出
                     mvwprintw(Savef[0], 8, 32, "<确定>");            //输出确定按钮
-                    wattroff(Savef[0], COLOR_PAIR(1));              //启用“白底黑字”输出
+                    wattroff(Savef[0], COLOR_PAIR(26));              //启用“白底黑字”输出
                     wrefresh(Savef[0]);                             //刷新窗口
                     wmove(Savef[0], 8, 32);                         //移到<确定>上
                     break;
@@ -229,16 +235,18 @@ void savefile(WINDOW *win, int SW, int SH) {
                 }
             break;
             case 353:                                               //用户按下了Shift+TAB
-                wattroff(Savef[0], COLOR_PAIR(2));                  //启用“黑底白字”输出
+                wattron(Savef[0], COLOR_PAIR(5));
                 mvwprintw(Savef[0], 8, 12, "<取消>");                //重绘取消按钮
+                wattroff(Savef[0], COLOR_PAIR(5));
+                wattron(Savef[0], COLOR_PAIR(6));
                 mvwprintw(Savef[0], 8, 32, "<确定>");                //重绘确定按钮
-                wattroff(Savef[0], COLOR_PAIR(2));                  //关闭“黑底白字”输出
-                mvwprintw(Savef[0], 7, 5, "             ");         //清除提示信息
+                wattroff(Savef[0], COLOR_PAIR(6));
+                mvwprintw(Savef[0], 7, 3, "                 ");     //清除提示信息
                 if (i == 0) {                                       //如果光标在输入窗口
                     i = 2;                                          //移动光标
-                    wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
+                    wattron(Savef[0], COLOR_PAIR(26));               //启用“白底黑字”输出
                     mvwprintw(Savef[0], 8, 32, "<确定>");            //输出确定按钮
-                    wattroff(Savef[0], COLOR_PAIR(1));              //关闭“白底黑字”输出
+                    wattroff(Savef[0], COLOR_PAIR(26));              //关闭“白底黑字”输出
                     wrefresh(Savef[0]);
                     wmove(Savef[0], 8, 32);                         //移到<确定>上
                     break;
@@ -250,9 +258,9 @@ void savefile(WINDOW *win, int SW, int SH) {
                 }
                 if (i == 2) {                                       //如果光标在<确定>上
                     i--;                                            //移动光标
-                    wattron(Savef[0], COLOR_PAIR(1));               //启用“白底黑字”输出
+                    wattron(Savef[0], COLOR_PAIR(25));               //启用“白底黑字”输出
                     mvwprintw(Savef[0], 8, 12, "<取消>");            //输出按钮
-                    wattroff(Savef[0], COLOR_PAIR(1));              //关闭“白底黑字”输出
+                    wattroff(Savef[0], COLOR_PAIR(25));              //关闭“白底黑字”输出
                     wmove(Savef[0], 8, 12);                         //移到<取消>上
                     wrefresh(Savef[0]);                             //刷新窗口
                     break;
@@ -264,14 +272,16 @@ void savefile(WINDOW *win, int SW, int SH) {
                 if (i == 1) goto end;                               //如果光标在<取消>上，就退出
                 if (i == 2) goto start;                             //如果光标在<确定>上，就继续
                 if (i == 0) {                                       //如果光标在输入窗口上
-                    mvwprintw(Savef[0], 7, 5, "按TAB键切换光标");     //输出提示
+                    wattron(Savef[0], COLOR_PAIR(3));                //使用黑底红字输出
+                    mvwprintw(Savef[0], 7, 3, "按TAB键切换光标");     //输出提示
+                    wattroff(Savef[0], COLOR_PAIR(3));
                     wmove(Savef[0], 5, 2 + pn);                     //复位光标
                     wrefresh(Savef[0]);                             //刷新窗口
                 }
             break;
             case 127:                                               //按下退格键
                 getyx(Savef[0],y,x);                                //获取光标位置，储存在x和y中
-                mvwprintw(Savef[0], 7, 5, "             ");         //清除提示信息
+                mvwprintw(Savef[0], 7, 3, "                 ");     //清除提示信息
                 wmove(Savef[0], y, x);                              //光标复位
                 if (x - 1 >= 2) {                                   //如果有数据需要删除
                     mvwprintw(Savef[0], y, x - 1, " ");             //清除按下按键产生的字符和需要删除的字符
@@ -298,16 +308,20 @@ void savefile(WINDOW *win, int SW, int SH) {
             case KEY_LEFT:
             case KEY_RIGHT:
             case KEY_UP:
-                if (i != 0) {                                       //如果光标在输入窗口上
-                    mvwprintw(Savef[0], 7, 5, "按TAB键切换光标");     //输出提示
+                    wattron(Savef[0], COLOR_PAIR(3));                //使用黑底红字输出
+                    mvwprintw(Savef[0], 7, 3, "按TAB键切换光标");     //输出提示
+                    wattroff(Savef[0], COLOR_PAIR(3));
                     wmove(Savef[0], 5, 2 + pn);                     //复位光标
                     wrefresh(Savef[0]);                             //刷新窗口
-                }
             break;
             default:
                 getyx(Savef[0], y, x);                              //获取光标位置，储存在x和y中
+                mvwprintw(Savef[0], 7, 3, "                   ");   //清除提示信息
+                wmove(Savef[0], y, x);                              //光标复位
                 if (p > 45) {                                       //如果超出显示范围
-                    mvwprintw(Savef[0], 7, 5, "文件名过长！");        //提示文件名过长
+                    wattron(Savef[0], COLOR_PAIR(3));                //使用黑底红字输出
+                    mvwprintw(Savef[0], 7, 3, "文件名过长！");        //提示文件名过长
+                    wattroff(Savef[0], COLOR_PAIR(3));
                     wmove(Savef[0], y, x);                          //光标复位
                     break;
                 }
@@ -346,8 +360,10 @@ void savefile(WINDOW *win, int SW, int SH) {
                                 Chinese[0] = 0;                     //清除输入的中文
                                 Chinese[1] = 0;                     //清除输入的中文
                                 Chinese[2] = 0;                     //清除输入的中文
+                                wattron(Savef[0], COLOR_PAIR(3));                //使用黑底红字输出
+                                mvwprintw(Savef[0], 7, 3, "文件名过长！");//输出提示信息
+                                wattroff(Savef[0], COLOR_PAIR(3));
                                 IsInputChinese = 0;                 //设定中文输入数量
-                                mvwprintw(Savef[0], 7, 5, "文件名过长！");//输出提示信息
                                 wmove(Savef[0], y, x);              //光标复位
                                 break;
                             }
@@ -411,7 +427,9 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
     switch (Status) {                                               //确定操作 0：创建 1：修改
         case 0:                                                     //创建操作下不会获取名字字符串长度
             mvwprintw(win, 2, SW /2 - 10 , "请指定得票比例%%");        //输出提示
+            wattron(win, COLOR_PAIR(9));
             mvwprintw(win, SH -  2, 10 , "按<ESC>退出");
+            wattroff(win, COLOR_PAIR(9));
             wmove(win, 2, SW /2 +4);                                //移动光标到输入位置
             while (1) {
                 getyx(win, y, x);                                   //获取光标位置，储存在x和y中
@@ -451,10 +469,12 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
             mvwprintw(win, 1, SW/2 - 3, "%s", "投票系统");            //输出标题
             mvwprintw(win, 2, 1, "%s", "共有12位候选人：");            //输出提示
             mvwprintw(win, 2, SW - 21, "%s", "请为你喜欢的候选人+1s");
+            wattron(win, COLOR_PAIR(7));
             for (size_t j = 1; j <= 12; j++) {                      //设置候选人输入位置
                 mvwprintw(win, 5 + (int)((j-1) / 2) * 3, (j%2==0)?SW / 2 + 5:5, "%s%d%s", "NO.", j, ":");
                 score[j-1] = 0;                                     //初始化得票
             }
+            wattroff(win, COLOR_PAIR(7));
             delName();                                              //初始化候选人名字
             Nscore = 0;                                             //初始化投票次数
         break;
@@ -463,8 +483,12 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
             mvwprintw(win, 2, 1, "%s", "共有12位候选人：");            //输出提示
             mvwprintw(win, 2, SW - 21, "%s", "请为你喜欢的候选人+1s");
             for (size_t k = 0; k < 6; k++) {                        //设置候选人输入位置以及输出名字
-                mvwprintw(win, 5 + (int)k * 3, 5, "%s%d%s%s", "NO.", k * 2 + 1, ":", Name[k*2]);//输出已输入的候选人名字
-                mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5, "%s%d%s%s", "NO.", k * 2 + 2, ":", Name[k*2+1]);
+                wattron(win, COLOR_PAIR(7));
+                mvwprintw(win, 5 + (int)k * 3, 5, "%s%d%s", "NO.", k * 2 + 1, ":");//输出已输入的候选人名字
+                mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5, "%s%d%s", "NO.", k * 2 + 2, ":");
+                wattroff(win, COLOR_PAIR(7));
+                mvwprintw(win, 5 + (int)k * 3, 10 + ((k * 2 + 1) / 10), "%s", Name[k*2]);
+                mvwprintw(win, 5 + (int)k * 3, SW / 2 + 10 + ((k * 2 + 1) / 10), "%s", Name[k*2+1]);
                 p[k*2] =longofstring(Name[k*2],0);                  //获取名字字符串长度
                 p[k*2+1] =longofstring(Name[k*2+1],0);
                 psl[k*2] =longofstring(Name[k*2],1);                //获取名字字符串显示长度
@@ -476,7 +500,9 @@ void WinCU(WINDOW *win, int SW, int SH, int Status) {
     mvwprintw(win, 24, 5, "%s%s%%", "得票比例：", s);                 //输出得票比例输入位置
     p[12] = longofstring(s,0);                                      //设置得票比例的字符串长度
     psl[12] = 4 + longofstring(s,1);                                //设置得票比例的字符串显示长度
+    wattron(win, COLOR_PAIR(9));
     mvwprintw(win, SH - 2, 5, "%s", "方向键移动光标\t\t<Enter>保存\t\t没得不保存退出");//输出提示
+    wattroff(win, COLOR_PAIR(9));
     kx = 5;                                                         //初始化光标坐标变量
     ky = 10 + psl[0];
     wmove(win, kx, ky);                                             //将光标移动到一号上
@@ -702,13 +728,19 @@ void WinSet(WINDOW *win, int SW) {
     for (size_t k = 0; k < 6; k++) {
         p[k*2] =longofstring(Name[k*2],1);                          //获取名字字符串长度
         p[k*2+1] =longofstring(Name[k*2+1],1);                      //获取名字字符串长度
+        wattron(win, COLOR_PAIR(7));
         mvwprintw(win, 5 + (int)k * 3, 5, "%s", Name[k*2]);
-        mvwprintw(win, 5 + (int)k * 3, 5 + p[k*2], ":[ ]");
         mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5, "%s", Name[k*2+1]);
+        wattroff(win, COLOR_PAIR(7));
+        mvwprintw(win, 5 + (int)k * 3, 5 + p[k*2], ":[ ]");
         mvwprintw(win, 5 + (int)k * 3, SW / 2 + 5 + p[k*2+1], ":[ ]");
     }
+    wattron(win, COLOR_PAIR(5));
     mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
+    wattroff(win, COLOR_PAIR(5));
+    wattron(win, COLOR_PAIR(6));
     mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+    wattroff(win, COLOR_PAIR(6));
     p[12] = 7;                                                      //设定选项的偏差值
     p[13] = 7;
     int key, i = 1, kx = 5, ky = 5 + p[0] + 2;                      //设定光标移动所需变量
@@ -716,17 +748,17 @@ void WinSet(WINDOW *win, int SW) {
     wmove(win, kx, ky);                                             //将光标移动到一号上
     keypad(win, TRUE);                                              //允许处理键盘输入值
     wrefresh(win);                                                  //刷新窗口
-    init_pair(1,COLOR_BLACK,COLOR_WHITE);
-    init_pair(2,COLOR_WHITE,COLOR_BLACK);
     while(1){                                                       //获取键盘操作
         key = wgetch(win);                                          //从键盘读取值，类似于getchar()
         switch(key){                                                //判断按下的值
             case KEY_UP:                                            //按下方向键上
                 if(i > 2){                                          //判断光标位置索引
-                    wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                    wattroff(win, COLOR_PAIR(2));
+                    wattron(win, COLOR_PAIR(5));
+                    mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
+                    wattroff(win, COLOR_PAIR(5));
+                    wattron(win, COLOR_PAIR(6));
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+                    wattroff(win, COLOR_PAIR(6));
                     i -= 2;                                         //更改光标索引
                     kx -= 3;                                        //光标向上移动3格
                     if (i % 2 == 0) {                               //判断光标纵向位置，光标在第二列
@@ -740,20 +772,22 @@ void WinSet(WINDOW *win, int SW) {
                 break;
             case KEY_DOWN:                                          //按下方向键下
                 if(i < 13){                                         //判断光标位置索引
-                    wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                    wattroff(win, COLOR_PAIR(2));
+                    wattron(win, COLOR_PAIR(5));
+                    mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
+                    wattroff(win, COLOR_PAIR(5));
+                    wattron(win, COLOR_PAIR(6));
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+                    wattroff(win, COLOR_PAIR(6));
                     i += 2;                                         //更改光标索引
                     if (i == 13) {
-                        wattron(win, COLOR_PAIR(1));
+                        wattron(win, COLOR_PAIR(25));
                         mvwprintw(win, 23, 14, "%s", "<退出>");
-                        wattroff(win, COLOR_PAIR(1));
+                        wattroff(win, COLOR_PAIR(25));
                     }
                     if (i == 14) {
-                        wattron(win, COLOR_PAIR(1));
+                        wattron(win, COLOR_PAIR(26));
                         mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                        wattroff(win, COLOR_PAIR(1));
+                        wattroff(win, COLOR_PAIR(26));
                     }
                     kx += 3;                                        //光标向下移动3格
                     if (i % 2 == 0) {                               //判断光标纵向位置，光标在第二列
@@ -768,10 +802,12 @@ void WinSet(WINDOW *win, int SW) {
             case 353:                                               //按下Shift+TAB
             case KEY_LEFT:                                          //按下方向键左
                 if (i > 1) {                                        //判断光标位置索引
-                    wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                    wattroff(win, COLOR_PAIR(2));
+                    wattron(win, COLOR_PAIR(5));
+                    mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
+                    wattroff(win, COLOR_PAIR(5));
+                    wattron(win, COLOR_PAIR(6));
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+                    wattroff(win, COLOR_PAIR(6));
                     if((i % 2) == 0){                               //判断光标纵向位置，光标在第一列
                         i -= 1;                                     //更改光标索引
                         ky = 5 + p[i-1] + 2;                        //设置光标横向位置
@@ -782,14 +818,14 @@ void WinSet(WINDOW *win, int SW) {
                         ky = SW / 2 + 5 + p[i-1] + 2;               //设置光标横向位置
                     }
                     if (i == 13) {
-                        wattron(win, COLOR_PAIR(1));
+                        wattron(win, COLOR_PAIR(25));
                         mvwprintw(win, 23, 14, "%s", "<退出>");
-                        wattroff(win, COLOR_PAIR(1));
+                        wattroff(win, COLOR_PAIR(25));
                     }
                     if (i == 14) {
-                        wattron(win, COLOR_PAIR(1));
+                        wattron(win, COLOR_PAIR(26));
                         mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                        wattroff(win, COLOR_PAIR(1));
+                        wattroff(win, COLOR_PAIR(26));
                     }
                     wmove(win, kx, ky);                         //移动光标
                 }
@@ -797,10 +833,12 @@ void WinSet(WINDOW *win, int SW) {
             case 9:                                                 //按下TAB
             case KEY_RIGHT:                                         //按下方向键右
                 if (i < 14){                                        //判断光标位置索引
-                    wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                    wattroff(win, COLOR_PAIR(2));
+                    wattron(win, COLOR_PAIR(5));
+                    mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
+                    wattroff(win, COLOR_PAIR(5));
+                    wattron(win, COLOR_PAIR(6));
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+                    wattroff(win, COLOR_PAIR(6));
                     if((i % 2) == 0){                               //判断光标纵向位置，光标在第二列
                         i += 1;                                     //更改光标索引
                         ky = 5 + p[i-1] + 2;                        //设置光标横向位置
@@ -811,14 +849,14 @@ void WinSet(WINDOW *win, int SW) {
                         ky = SW / 2 + 5 + p[i-1] + 2;               //设置光标横向位置
                     }
                     if (i == 13) {
-                        wattron(win, COLOR_PAIR(1));
+                        wattron(win, COLOR_PAIR(25));
                         mvwprintw(win, 23, 14, "%s", "<退出>");
-                        wattroff(win, COLOR_PAIR(1));
+                        wattroff(win, COLOR_PAIR(25));
                     }
                     if (i == 14) {
-                        wattron(win, COLOR_PAIR(1));
+                        wattron(win, COLOR_PAIR(26));
                         mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                        wattroff(win, COLOR_PAIR(1));
+                        wattroff(win, COLOR_PAIR(26));
                     }
                     wmove(win, kx, ky);                         //移动光标
                 }
@@ -831,20 +869,22 @@ void WinSet(WINDOW *win, int SW) {
             case 10:                                                //按下回车
                 if (i == 13) {                                      //如果光标在<退出>上
                     WINDOW *sure;                                   //新建警告窗口
-                    init_pair(1,COLOR_BLACK,COLOR_WHITE);
-                    init_pair(2,COLOR_WHITE,COLOR_BLACK);
                     sure = newwin(8, 30, WinY / 2 - 4, WinX / 2 - 15);//确定窗口大小和位置
                     box(sure, 0, 0);                                //绘制边框
                     mvwprintw(sure, 2, 8, "%s", "确定要退出吗？");     //输出确认信息
                     for (size_t n = 0; n < 12; n++) {               //检索残余的数据
                         if (setscore[n] != 0) {                     //如果有投票
-                        mvwprintw(sure, 3, 7, "%s", "本次投票尚未保存！");//输出多一句警告
+                            wattron(sure, COLOR_PAIR(5));
+                            mvwprintw(sure, 3, 7, "%s", "本次投票尚未保存！");//输出多一句警告
+                            wattroff(sure, COLOR_PAIR(5));
                         }
                     }
-                    wattron(sure, COLOR_PAIR(1));
+                    wattron(sure, COLOR_PAIR(25));
                     mvwprintw(sure, 5, 4, "%s","<取消>");             //绘制"取消"键
-                    wattroff(sure, COLOR_PAIR(1));
+                    wattroff(sure, COLOR_PAIR(25));
+                    wattron(sure, COLOR_PAIR(7));
                     mvwprintw(sure, 5, 20, "%s","<确定>");            //绘制"确定"键
+                    wattroff(sure, COLOR_PAIR(7));
                     touchwin(sure);                                 //警告窗口获取焦点
                     wrefresh(win);                                  //刷新父窗口
                     wmove(sure, 5, 4);                              //移动光标到<取消>上
@@ -856,24 +896,24 @@ void WinSet(WINDOW *win, int SW) {
                         switch(key) {                               //判断按下的值
                             case KEY_LEFT:                          //按下方向键左
                                 if (si == 1) {                      //判断光标位置索引
-                                    wattron(sure, COLOR_PAIR(2));
+                                    wattron(sure, COLOR_PAIR(7));
                                     mvwprintw(sure, 5, 20, "%s","<确定>");            //绘制"确定"键
-                                    wattroff(sure, COLOR_PAIR(2));
-                                    wattron(sure, COLOR_PAIR(1));
+                                    wattroff(sure, COLOR_PAIR(7));
+                                    wattron(sure, COLOR_PAIR(25));
                                     mvwprintw(sure, 5, 4, "%s","<取消>");             //绘制"取消"键
-                                    wattroff(sure, COLOR_PAIR(1));
+                                    wattroff(sure, COLOR_PAIR(25));
                                     wmove(sure, 5, 4);              //移动光标到<取消>上
                                     si = 0;                         //设置光标索引在<取消>上
                                 }
                                 break;
                             case KEY_RIGHT:                         //按下方向键右
                                 if (si == 0) {                      //判断光标位置索引
-                                    wattron(sure, COLOR_PAIR(2));
+                                    wattron(sure, COLOR_PAIR(5));
                                     mvwprintw(sure, 5, 4, "%s","<取消>");             //绘制"取消"键
-                                    wattroff(sure, COLOR_PAIR(2));
-                                    wattron(sure, COLOR_PAIR(1));
+                                    wattroff(sure, COLOR_PAIR(5));
+                                    wattron(sure, COLOR_PAIR(27));
                                     mvwprintw(sure, 5, 20, "%s","<确定>");            //绘制"确定"键
-                                    wattroff(sure, COLOR_PAIR(1));
+                                    wattroff(sure, COLOR_PAIR(27));
                                     wmove(sure, 5, 20);             //移动光标到<确定>上
                                     si = 1;                         //设置光标索引在<确定>上
                                 }
@@ -904,10 +944,12 @@ void WinSet(WINDOW *win, int SW) {
                         setscore[i] = 0;                            //清除投票信息
                         mvwprintw(win, kx, ky, " ");                //清除屏幕信息
                     }
-                    wattron(win, COLOR_PAIR(2));
-                    mvwprintw(win, 23, 14, "%s", "<退出>");
-                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");
-                    wattroff(win, COLOR_PAIR(2));
+                    wattron(win, COLOR_PAIR(5));
+                    mvwprintw(win, 23, 14, "%s", "<退出>");                          //输出退出按钮
+                    wattroff(win, COLOR_PAIR(5));
+                    wattron(win, COLOR_PAIR(6));
+                    mvwprintw(win, 23, SW /2 + 14, "%s", "<下一个>");                //输出下一个按钮
+                    wattroff(win, COLOR_PAIR(6));
                     i = 1;                                          //初始化光标索引
                     kx = 5;                                         //初始化光标纵向位置
                     ky = 5 + p[0] + 2;                              //初始化光标横向位置
@@ -959,22 +1001,36 @@ void WinShow(WINDOW *win, int SW) {
     mvwprintw(cwin[3], 1, 2, "%s", "得票率");
     mvwprintw(cwin[4], 1, 2, "%s", "是否中选");
     for (size_t i = 0; i < 12; i++) {                               //检索投票结果
+        wattron(cwin[0], COLOR_PAIR(8));
         if (i<9) mvwprintw(cwin[0], 2 + (int)i, 6, "%d", i+1);      //判断编号长度
         else mvwprintw(cwin[0], 2 + (int)i, 5, "%d", i+1);
+        wattroff(cwin[0], COLOR_PAIR(8));
         mvwprintw(cwin[1], 2 + (int)i, 2, "%s", Name[i]);           //输出候选人姓名
+        wattron(cwin[2], COLOR_PAIR(7));
         mvwprintw(cwin[2], 2 + (int)i, 3, "%d", score[i]);          //输出候选人得票
+        wattroff(cwin[2], COLOR_PAIR(7));
         if (Nscore != 0) {                                          //判断候选人得票
             p = score[i]*100/(double)Nscore;                        //将得票百分比储存到p中
             if ((int)p == 100) {                                    //判断全票的人，避免输出1x10%2%
                 mvwprintw(cwin[3], 2 + (int)i, 3, "100%%");         //输出100%
             }
             else mvwprintw(cwin[3], 2 + (int)i, 3, "%.3g%%", p);    //输出得票比例
-            if (p >= Np) mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "True");//判断是否达标
-            else mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "False");
+            if (p >= Np) {
+                wattron(cwin[4], COLOR_PAIR(6));
+                mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "True");    //判断是否达标
+                wattroff(cwin[4], COLOR_PAIR(6));
+            }
+            else {
+                wattron(cwin[4], COLOR_PAIR(5));
+                mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "False");
+                wattroff(cwin[4], COLOR_PAIR(5));
+            }
         }
         else{                                                       //如果没有得票
             mvwprintw(cwin[3], 2 + (int)i, 3, "0%%");               //输出0%
+            wattron(cwin[4], COLOR_PAIR(5));
             mvwprintw(cwin[4], 2 + (int)i, 3, "%s", "False");       //输出False
+            wattroff(cwin[4], COLOR_PAIR(5));
         }
     }
     wrefresh(win);                                                  //刷新窗口
@@ -1038,6 +1094,18 @@ int main(int argc, char const *argv[]) {
     initscr();                                                      //初始化终端窗口
     noecho();
     start_color();
+    init_pair(1,COLOR_BLACK,COLOR_WHITE);                           //定义白底黑字
+    init_pair(2,COLOR_WHITE,COLOR_BLACK);                           //定义黑底白字
+    init_pair(3,COLOR_RED,COLOR_BLACK);                             //定义黑底红字
+    init_pair(4,COLOR_BLUE,COLOR_BLACK);                            //定义黑底蓝字
+    init_pair(5, COLOR_RED, COLOR_BLACK);                           //定义黑底红字
+    init_pair(6, COLOR_GREEN, COLOR_BLACK);                         //定义黑底原谅字
+    init_pair(7, COLOR_YELLOW, COLOR_BLACK);                        //定义黑底黄字
+    init_pair(25, COLOR_RED, COLOR_WHITE);                          //定义白底红字
+    init_pair(26, COLOR_GREEN, COLOR_WHITE);                        //定义白底原谅字
+    init_pair(27, COLOR_YELLOW, COLOR_WHITE);                        //定义黑底黄字
+    init_pair(8, COLOR_MAGENTA, COLOR_BLACK);                       //定义黑底品红字
+    init_pair(9, COLOR_BLUE, COLOR_BLACK);                          //定义黑底蓝字
     win[0]=newwin(10,21,1,3);                                       //设定选择窗口的大小和位置
     win[1]=newwin(WinY - 2, WinX - 25,1,24);                        //设定操作窗口的大小和位置
     W1 = WinX - 25;                                                 //储存操作窗口的大小
