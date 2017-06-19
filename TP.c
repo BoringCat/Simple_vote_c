@@ -25,36 +25,36 @@ char *IsMMP(int *str){                                          //过滤中文�
 //输出选择窗口带背景颜色的字体
 void PrintColorWord(WINDOW *win, int i) {
     wattron(win, COLOR_PAIR(2));                                //启用“黑底白字”输出
-    mvwprintw(win,1,1,"%s","1──────创建(Create)");               //输出选项
-    mvwprintw(win,2,1,"%s","2──────修改(Update)");
-    mvwprintw(win,3,1,"%s","3──────投票(Set)");
-    mvwprintw(win,4,1,"%s","4──────显示(Show)");
-    mvwprintw(win,5,1,"%s","5──────保存(Save)");
-    mvwprintw(win,6,1,"%s","6──────帮助(Help)");
-    mvwprintw(win,7,1,"%s","7──────退出(Exit)");
+    mvwprintw(win,1,1,"%s","1─────创建(Create)  ");               //输出选项
+    mvwprintw(win,2,1,"%s","2─────修改(Update)  ");
+    mvwprintw(win,3,1,"%s","3─────投票(Set)     ");
+    mvwprintw(win,4,1,"%s","4─────显示(Show)    ");
+    mvwprintw(win,5,1,"%s","5─────保存(Save)    ");
+    mvwprintw(win,6,1,"%s","6─────帮助(Help)    ");
+    mvwprintw(win,7,1,"%s","7─────退出(Exit)    ");
     wattroff(win, COLOR_PAIR(2));                               //关闭“黑底白字”输出
     wattron(win, COLOR_PAIR(1));                                //启用“白底黑字”输出
     switch (i) {                                                //选择输出行
         case 1:
-            mvwprintw(win,1,1,"%s","1──────创建(Create)");
+            mvwprintw(win,1,1,"%s","1─────创建(Create)");
         break;
         case 2:
-            mvwprintw(win,2,1,"%s","2──────修改(Update)");
+            mvwprintw(win,2,1,"%s","2─────修改(Update)");
         break;
         case 3:
-            mvwprintw(win,3,1,"%s","3──────投票(Set)");
+            mvwprintw(win,3,1,"%s","3─────投票(Set)");
         break;
         case 4:
-            mvwprintw(win,4,1,"%s","4──────显示(Show)");
+            mvwprintw(win,4,1,"%s","4─────显示(Show)");
         break;
         case 5:
-            mvwprintw(win,5,1,"%s","5──────保存(Save)");
+            mvwprintw(win,5,1,"%s","5─────保存(Save)");
         break;
         case 6:
-            mvwprintw(win,6,1,"%s","6──────帮助(Help)");
+            mvwprintw(win,6,1,"%s","6─────帮助(Help)");
         break;
         case 7:
-            mvwprintw(win,7,1,"%s","7──────退出(Exit)");
+            mvwprintw(win,7,1,"%s","7─────退出(Exit)");
         break;
     }
     wmove(win, i, 1);                                       //移动光标到目标行
@@ -132,13 +132,13 @@ void printhelp(WINDOW *win, int SW, int SH) {
     WINDOW *example;                                                //定义示例窗口
     example = newwin(12,23,6,WinX - 26);                            //将示例窗口定义到右边
     box(example, 0, 0);                                             //为示例窗口加上边框
-    mvwprintw(example, 2, 2, "1──────创建(Create)");                 //继续输出帮助
-    mvwprintw(example, 3, 2, "2──────修改(Update)");
-    mvwprintw(example, 4, 2, "3──────投票(Set)");
-    mvwprintw(example, 5, 2, "4──────显示(Show)");
-    mvwprintw(example, 6, 2, "5──────保存(Save)");
-    mvwprintw(example, 7, 2, "6──────帮助(Help)");
-    mvwprintw(example, 8, 2, "7──────退出(Exit)");
+    mvwprintw(example, 2, 2, "1─────创建(Create)");                 //继续输出帮助
+    mvwprintw(example, 3, 2, "2─────修改(Update)");
+    mvwprintw(example, 4, 2, "3─────投票(Set)");
+    mvwprintw(example, 5, 2, "4─────显示(Show)");
+    mvwprintw(example, 6, 2, "5─────保存(Save)");
+    mvwprintw(example, 7, 2, "6─────帮助(Help)");
+    mvwprintw(example, 8, 2, "7─────退出(Exit)");
     mvwprintw(example, 9, 2, "使用方向键上下选择");
     mvwprintw(win, 11, 8, "然后认!真!阅!读!选择窗口的最后一行。");
     mvwprintw(win, 13, 5, "3、关于操作窗口的提示");
@@ -1120,6 +1120,7 @@ int main(int argc, char const *argv[]) {
     printhelp(win[1], W1, H1);                                      //在操作窗口上显示帮助
     p = 1;
     while (1) {
+        PrintColorWord(win[0], p);
         getmaxyx(stdscr,y,x);
         if (WinX != x || WinY != y) {
             WinX = x;
@@ -1155,16 +1156,22 @@ int main(int argc, char const *argv[]) {
                 }
                 switch (p) {
                     case 1:                                         //用户输入创建
+                        mvwprintw(win[0], 1, 19,"─>");
+                        wrefresh(win[0]);
                         wclear(win[1]);                             //清除操作窗口
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                         WinCU(win[1], W1, H1, 0);
                     break;
                     case 2:                                         //用户输入修改
+                        mvwprintw(win[0], 2, 19,"─>");
+                        wrefresh(win[0]);
                         wclear(win[1]);                             //清除操作窗口
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                         WinCU(win[1], W1, H1, 1);
                     break;
                     case 3:                                         //用户输入投票
+                        mvwprintw(win[0], 3, 16,"────>");
+                        wrefresh(win[0]);
                         wclear(win[1]);                             //清除操作窗口
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                         WinSet(win[1], W1);
@@ -1172,11 +1179,15 @@ int main(int argc, char const *argv[]) {
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                     break;
                     case 4:                                         //用户输入显示
+                        mvwprintw(win[0], 4, 17,"───>");
+                        wrefresh(win[0]);
                         wclear(win[1]);                             //清除操作窗口
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                         WinShow(win[1], W1);
                     break;
                     case 5:                                         //用户输入保存
+                        mvwprintw(win[0], 5, 17,"───>");
+                        wrefresh(win[0]);
                         wclear(win[1]);                             //清除操作窗口
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                         wrefresh(win[1]);
@@ -1184,6 +1195,8 @@ int main(int argc, char const *argv[]) {
                         WinShow(win[1], W1);
                     break;
                     case 6:                                         //用户输入帮助
+                        mvwprintw(win[0], 6, 17,"───>");
+                        wrefresh(win[0]);
                         wclear(win[1]);                             //清除操作窗口
                         box(win[1],0,0);                            //为操作窗口重新设定边框
                         printhelp(win[1], W1, H1);
